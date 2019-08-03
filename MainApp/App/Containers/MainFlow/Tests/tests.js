@@ -106,7 +106,6 @@ export class TestTabs extends Component {
                 initialPage={1}
                 renderTabBar={() => <ScrollableTabBar />}
             >
-                <View style={[styles.container, { alignItems: 'center' }]} tabLabel='All Tests'>
                     <ScrollView>
                         {
                             this.state.test_category.map((item, key) => {
@@ -130,7 +129,6 @@ export class TestTabs extends Component {
                             })
                         }
                     </ScrollView>
-                </View>
                 {
                     this.state.test_category.map((item, key) => {
                         return (
@@ -157,14 +155,7 @@ export class TestsList extends Component {
                 { id: 4, test: 'IBPS Clerk-Full Mock Test', expiry: '11:30AM 21Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
                 { id: 5, test: 'IBPS Clerk-Full Mock Test', expiry: '12:30PM 17Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
                 { id: 6, test: 'IBPS Clerk-Full Mock Test', expiry: '02:30PM 25Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-            ],
-            test_types: [
-                { id: 1, type: 'Free Test' },
-                { id: 2, type: 'Test Series' },
-                { id: 3, type: 'Paid Test' },
-                { id: 4, type: 'Top Test' },
-            ],
-            // duration: 0
+            ]
         };
     }
 
@@ -177,12 +168,9 @@ export class TestsList extends Component {
         console.log('api data', loginData.DATA);
     }
 
-    async EnterToTest(itemId) {
-        let userValue = await Storage.getItem('user')
-        console.log('user object:', userValue)
-        console.log('Quiz Id:', itemId)
-        Storage.setItem('quizId', itemId)
-        _this.props.navigation.navigate('testInstructions')
+    async EnterToTest(item) {
+        console.log('subject object:', item)
+        _this.props.navigation.navigate('testInstructions', {oneSubject: item})
     }
 
     render() {
@@ -234,11 +222,11 @@ export class TestsList extends Component {
                                                             <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
                                                         </View>
                                                         <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.duration}</Text>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.quiz_duration}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>
-                                                        <TouchableOpacity onPress={() => this.EnterToTest(item.QUIZ_ID)} style={{ backgroundColor: colors.Offeeblue, borderRadius: 2.5, height: height(5), width: width(50), alignItems: 'center', justifyContent: 'center' }}>
+                                                        <TouchableOpacity onPress={() => this.EnterToTest(item)} style={{ backgroundColor: colors.Offeeblue, borderRadius: 2.5, height: height(5), width: width(50), alignItems: 'center', justifyContent: 'center' }}>
                                                             <Text style={[styles.h3, { color: 'white', fontWeight: 'bold' }]}>Enter Now</Text>
                                                         </TouchableOpacity>
                                                     </View>

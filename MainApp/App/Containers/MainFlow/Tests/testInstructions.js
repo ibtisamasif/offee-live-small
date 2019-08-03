@@ -9,7 +9,25 @@ class TestInstructions extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: {}
         };
+    }
+
+    componentDidMount() {
+        this.getCurrentItem();
+    }
+
+    async getCurrentItem() {
+        const note = "This screen will be accessible from the navigation screen";
+        let item = this.props.navigation.getParam("oneSubject");
+        console.log('oneSubject:', item)
+        if (item) {
+            this.setState({
+                data: {
+                    quiz_duration: item.quiz_duration
+                }
+            });
+        }
     }
 
     render() {
@@ -21,7 +39,7 @@ class TestInstructions extends Component {
                     </View>
                     <View style={{ width: width(80), flexDirection: 'row', marginVertical: height(1) }}>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: 90 mins</Text>
+                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: {this.state.data.quiz_duration} mins</Text>
                         </View>
                         <View style={{ flex: 1, alignItems: 'center', }}>
                             <Text style={[styles.h4, { fontWeight: 'bold' }]}>Maximum Marks: 100</Text>
@@ -44,7 +62,7 @@ class TestInstructions extends Component {
                     <View style={{ marginVertical: height(10) }}>
                         <TouchableOpacity style={styles.botton} onPress={() => this.props.navigation.navigate('mcqScreen')}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.h3, { color: 'white' }]}>Agree and Continue       </Text>
+                                <Text style={[styles.h3, { color: 'white' }]}>Agree and Continue</Text>
                                 <Icon name='arrowright' type='antdesign' color='white' size={totalSize(2.5)} />
                             </View>
                         </TouchableOpacity>
