@@ -108,7 +108,7 @@ export async function getQuestions(quizId) {
   //console.log(fetchCallback)
 
   let responseJson = await fetchCallback.json();
-  //console.log('Quiz QUESTIONS:',responseJson);
+  console.log('Quiz QUESTIONS:',responseJson);
 
   // if(responseJson.status == 200){
   //   console.log('success',responseJson);

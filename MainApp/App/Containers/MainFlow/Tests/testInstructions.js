@@ -4,15 +4,12 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import {quizActivity} from '../../../backend/api'
-import { getConsoleOutput } from '@jest/console';
-
 
 class TestInstructions extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: {}
-
         };
     }
 
@@ -21,7 +18,6 @@ class TestInstructions extends Component {
     }
 
     async getCurrentItem() {
-        const note = "This screen will be accessible from the navigation screen";
         let item = this.props.navigation.getParam("oneSubject");
         console.log('oneSubject:', item)
         if (item) {
@@ -39,7 +35,7 @@ class TestInstructions extends Component {
     async quizActivity() {
         quizAct = await quizActivity(this.state.data);
         console.log(quizAct)
-        // this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
+        this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
     }
 
     render() {
