@@ -52,9 +52,9 @@ class Login extends Component {
 
       console.log(loginData);
 
-      // if(loginData.login == 'OK'){
-      //   this.props.navigation.navigate('App');
-      // }
+    //   if(loginData.login == 'OK'){
+        this.props.navigation.navigate('App');
+    //   }
 
     }
   }
@@ -135,7 +135,7 @@ class Login extends Component {
                                 <Text style={[styles.welcome, { fontSize: totalSize(1.5), color: colors.Offeeblue }]} onPress={() => this._toggleModalForgetPassword()} >Forgot Password?</Text>
                             </View>
                             <View style={styles.btnContainer}>
-                                <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('App')}>
+                                <TouchableOpacity style={styles.button} onPress={() => this.onLoginFunc()}>
                                     <View style={styles.btnTxtContainer}>
                                         {
                                             this.state.loading === true ?

@@ -4,6 +4,9 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import Modal from 'react-native-modal'
+import { subjectList } from '../../../backend/api'
+import Storage from '../../../helper/asyncStorage'
+
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 _this = null;
@@ -105,7 +108,7 @@ export class TestTabs extends Component {
                             this.state.test_category.map((item, key) => {
                                 return (
                                     <TouchableOpacity key={key} style={styles.mainBtn}
-                                        >
+                                    >
                                         <View style={styles.btnIconContainer}>
                                             <View style={{ width: totalSize(6), height: totalSize(6), borderRadius: 100, backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center' }}>
                                                 <Icon name="clipboard-text" size={totalSize(3)} color='white' type='material-community' />
@@ -156,8 +159,27 @@ export class TestsList extends Component {
                 { id: 2, type: 'Test Series' },
                 { id: 3, type: 'Paid Test' },
                 { id: 4, type: 'Top Test' },
-            ]
+            ],
+            // duration: 0
         };
+    }
+
+    async componentDidMount() {
+        loginData = await subjectList('2', 'demo');
+        console.log(parseInt(loginData.duration))
+        this.setState({
+            tests: loginData.DATA
+            // duration: parseInt(loginData.duration, 10)
+        })
+        console.log('api data', loginData.DATA);
+    }
+
+    async EnterToTest(itemId) {
+        let userValue = await Storage.getItem('user')
+        console.log('user object:', userValue)
+        console.log('Quiz Id:', itemId)
+        Storage.setItem('quizId', itemId)
+        _this.props.navigation.navigate('testInstructions')
     }
 
     render() {
@@ -167,62 +189,62 @@ export class TestsList extends Component {
                 <View style={styles.container}>
                     <ScrollView horizontal={true} tabLabel='IBPS Clerk'>
                         {
-                                    <View style={{ alignItems: 'center' }}>
-                                        <ScrollView  horizontal={true} >
-                                            {
-                                                this.state.tests.map((item, key) => {
-                                                    return (
-                                                        <View key={key} style={{ width: width(60), backgroundColor: 'white', alignItems: 'center', marginVertical: totalSize(2), marginHorizontal: totalSize(0.5), elevation: 2 }}>
-                                                            <View style={{ width: width(50), marginVertical: totalSize(2) }}>
-                                                                <Text style={[styles.h2]}>{item.test}</Text>
-                                                            </View>
-                                                            <View style={{ width: width(50), flexDirection: 'row', alignItems: 'center', marginVertical: totalSize(1) }}>
-                                                                <Icon name='clock' type='octicon' color='gray' size={totalSize(1.5)} />
-                                                                <Text style={styles.h4}> Starts on: {item.expiry}</Text>
-                                                            </View>
-                                                            <View style={{ width: width(50), marginVertical: totalSize(1) }}>
-                                                                <TouchableOpacity style={{ backgroundColor: 'gray', borderRadius: 100, height: height(3), width: width(20), alignItems: 'center', justifyContent: 'center' }}>
-                                                                    <Text style={[styles.h4, { color: 'white' }]}>{item.tag}</Text>
-                                                                </TouchableOpacity>
-                                                            </View>
-                                                            <View style={{ width: width(50), marginVertical: totalSize(0.5) }}>
-                                                                <Text style={[styles.h4, { color: colors.Offeeblue }]}>Syllabus Info</Text>
-                                                            </View>
-                                                            <View style={{ width: width(50), borderBottomWidth: 0.5, borderBottomColor: colors.steel, flexDirection: 'row' }}>
-                                                                <View style={{ flex: 1 }}>
-                                                                    <Text style={[styles.h4, { marginVertical: totalSize(1.5) }]}>Questions</Text>
-                                                                </View>
-                                                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                                    <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.questions}</Text>
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: width(50), borderBottomWidth: 0.5, borderBottomColor: colors.steel, flexDirection: 'row' }}>
-                                                                <View style={{ flex: 1 }}>
-                                                                    <Text style={[styles.h4, { marginVertical: totalSize(1.5) }]}>Score</Text>
-                                                                </View>
-                                                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                                    <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.Score}</Text>
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: width(50), flexDirection: 'row' }}>
-                                                                <View style={{ flex: 1 }}>
-                                                                    <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
-                                                                </View>
-                                                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                                    <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.duration}</Text>
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>
-                                                                <TouchableOpacity onPress={() => _this.props.navigation.navigate('testInstructions')} style={{ backgroundColor: colors.Offeeblue, borderRadius: 2.5, height: height(5), width: width(50), alignItems: 'center', justifyContent: 'center' }}>
-                                                                    <Text style={[styles.h3, { color: 'white', fontWeight: 'bold' }]}>Enter Now</Text>
-                                                                </TouchableOpacity>
-                                                            </View>
+                            <View style={{ alignItems: 'center' }}>
+                                <ScrollView horizontal={true} >
+                                    {
+                                        this.state.tests.map((item, key) => {
+                                            return (
+                                                <View key={key} style={{ width: width(60), backgroundColor: 'white', alignItems: 'center', marginVertical: totalSize(2), marginHorizontal: totalSize(0.5), elevation: 2 }}>
+                                                    <View style={{ width: width(50), marginVertical: totalSize(2) }}>
+                                                        <Text style={[styles.h2]}>{item.quiz_name}</Text>
+                                                    </View>
+                                                    <View style={{ width: width(50), flexDirection: 'row', alignItems: 'center', marginVertical: totalSize(1) }}>
+                                                        <Icon name='clock' type='octicon' color='gray' size={totalSize(1.5)} />
+                                                        <Text style={styles.h4}> Starts on: {item.expiry}</Text>
+                                                    </View>
+                                                    <View style={{ width: width(50), marginVertical: totalSize(1) }}>
+                                                        <TouchableOpacity style={{ backgroundColor: 'gray', borderRadius: 100, height: height(3), width: width(20), alignItems: 'center', justifyContent: 'center' }}>
+                                                            <Text style={[styles.h4, { color: 'white' }]}>{item.tag}</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <View style={{ width: width(50), marginVertical: totalSize(0.5) }}>
+                                                        <Text style={[styles.h4, { color: colors.Offeeblue }]}>Syllabus Info</Text>
+                                                    </View>
+                                                    <View style={{ width: width(50), borderBottomWidth: 0.5, borderBottomColor: colors.steel, flexDirection: 'row' }}>
+                                                        <View style={{ flex: 1 }}>
+                                                            <Text style={[styles.h4, { marginVertical: totalSize(1.5) }]}>Questions</Text>
                                                         </View>
-                                                    )
-                                                })
-                                            }
-                                        </ScrollView>
-                                    </View>
+                                                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.questions}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ width: width(50), borderBottomWidth: 0.5, borderBottomColor: colors.steel, flexDirection: 'row' }}>
+                                                        <View style={{ flex: 1 }}>
+                                                            <Text style={[styles.h4, { marginVertical: totalSize(1.5) }]}>Score</Text>
+                                                        </View>
+                                                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.Score}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ width: width(50), flexDirection: 'row' }}>
+                                                        <View style={{ flex: 1 }}>
+                                                            <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
+                                                        </View>
+                                                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.duration}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>
+                                                        <TouchableOpacity onPress={() => this.EnterToTest(item.QUIZ_ID)} style={{ backgroundColor: colors.Offeeblue, borderRadius: 2.5, height: height(5), width: width(50), alignItems: 'center', justifyContent: 'center' }}>
+                                                            <Text style={[styles.h3, { color: 'white', fontWeight: 'bold' }]}>Enter Now</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                </ScrollView>
+                            </View>
 
                         }
                     </ScrollView>
