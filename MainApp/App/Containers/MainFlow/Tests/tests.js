@@ -24,6 +24,10 @@ export default class Tests extends Component {
     logOut = () => {
         this._toggleModalLogout()
         this.props.navigation.navigate('Auth')
+        // Storage.removeItem('cat')
+        // Storage.removeItem('name')
+        Storage.removeItem('user');
+        Storage.clear();
     }
     render() {
         return (
@@ -165,11 +169,10 @@ export class TestsList extends Component {
     }
 
     async componentDidMount() {
-        loginData = await subjectList('2', 'demo');
-        console.log(parseInt(loginData.duration))
+        let user = await Storage.getItem('user');
+        loginData = await subjectList(user.cat, user.name);
         this.setState({
             tests: loginData.DATA
-            // duration: parseInt(loginData.duration, 10)
         })
         console.log('api data', loginData.DATA);
     }

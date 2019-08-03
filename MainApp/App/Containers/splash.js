@@ -22,13 +22,11 @@ export default class Splash extends React.Component {
 
     // Fetch the token from storage then navigate to our appropriate place
     _bootstrapAsync = async () => {
-        const userToken = Storage.getItem('user');
-        // const userToken = await AsyncStorage.getItem('user');
+        let userToken = await Storage.getItem('user');
 
         // This will switch to the App screen or Auth screen and this loading
         // screen will be unmounted and thrown away.
         setTimeout(() => { this.props.navigation.navigate(userToken ? 'App' : 'Auth') }, 1000);
-        // setTimeout(() => { this.props.navigation.navigate('Auth') }, 1000);
     };
 
     // Render any loading content that you like here

@@ -1,6 +1,6 @@
 import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation'
 import Login from '../Containers/LoginFlow/login';
-import SignUp from '../Containers/LoginFlow/signup';
+// import SignUp from '../Containers/LoginFlow/signup';
 import MainTab from '../Containers/ApplicationTabs/MainTab';
 import Splash from '../Containers/splash';
 import TestInstructions from '../Containers/MainFlow/Tests/testInstructions';
@@ -12,10 +12,11 @@ import AppDrawer from '../Containers/AppDrawer/AppDrawer';
 const AuthStack = createStackNavigator({
     login: {
         screen: Login
-    },
-    signup: {
-        screen: SignUp
-    },
+    }
+    // ,
+    // signup: {
+    //     screen: SignUp
+    // },
 });
 
 const AppStack = createStackNavigator({

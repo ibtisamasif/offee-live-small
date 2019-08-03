@@ -15,11 +15,20 @@ export async function login(username, password) {
   console.log(fetchCallback)
 
   let responseJson = await fetchCallback.json();
-  Storage.setItem('user',responseJson)
 
-  if(responseJson.status == '5'){
+  // let cat = responseJson.cat
+  // let name = responseJson.name
+
+  // console.log(cat);
+  // console.log(name);
+
+  // Storage.setItem('cat', cat)
+  // Storage.setItem('name', name)
+
+
+  if (responseJson.status == '5') {
     console.log('success');
-
+    Storage.setItem('user', responseJson)
   }
   return responseJson;
 }
@@ -41,8 +50,8 @@ export async function subjectList(category, user) {
   console.log(fetchCallback)
 
   let responseJson = await fetchCallback.json();
-  if(responseJson.status == 200){
-    console.log('success',responseJson);
+  if (responseJson.status == 200) {
+    console.log('success', responseJson);
     //Storage.setItem()
 
   }
@@ -52,7 +61,7 @@ export async function subjectList(category, user) {
 
 //////////////// Quiz Activity ///////////////////
 
-export async function quizActivity(currentTime,quizId, userId) {
+export async function quizActivity(currentTime, quizId, userId) {
   let formData = new FormData();
   formData.append('action', 'QUIZ_ACTIVITY');
   formData.append('start_time', currentTime);
@@ -68,7 +77,7 @@ export async function quizActivity(currentTime,quizId, userId) {
 
   let responseJson = await fetchCallback.json();
   //console.log('Quiz Activity:',responseJson);
-  
+
   // if(responseJson.status == 200){
   //   console.log('success',responseJson);
   //   //Storage.setItem()
@@ -95,7 +104,7 @@ export async function getQuestions(quizId) {
 
   let responseJson = await fetchCallback.json();
   //console.log('Quiz QUESTIONS:',responseJson);
-  
+
   // if(responseJson.status == 200){
   //   console.log('success',responseJson);
   //   //Storage.setItem()
@@ -121,7 +130,7 @@ export async function submitAnswers(quizId) {
 
   let responseJson = await fetchCallback.json();
   //console.log('Quiz QUESTIONS:',responseJson);
-  
+
   // if(responseJson.status == 200){
   //   console.log('success',responseJson);
   //   //Storage.setItem()

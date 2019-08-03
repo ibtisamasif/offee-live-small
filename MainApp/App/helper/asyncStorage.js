@@ -37,5 +37,16 @@ export default {
                 resolve()
             })
         })
+    },
+    clear() {
+        return new Promise((resolve, reject) => {
+            AsyncStorage.clear( error => {
+                if (error) {
+                    reject(error);
+                    return
+                }
+                resolve()
+            })
+        })
     }
 }
