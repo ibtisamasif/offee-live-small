@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
+import {quizActivity} from '../../../backend/api'
+import { getConsoleOutput } from '@jest/console';
 
 
 class TestInstructions extends Component {
@@ -10,6 +12,7 @@ class TestInstructions extends Component {
         super(props);
         this.state = {
             data: {}
+
         };
     }
 
@@ -24,10 +27,19 @@ class TestInstructions extends Component {
         if (item) {
             this.setState({
                 data: {
-                    quiz_duration: item.quiz_duration
+                    QUIZ_ID: item.QUIZ_ID,
+                    quiz_name: item.quiz_name,
+                    quiz_duration: item.quiz_duration,
+                    quiz_visibility: item.quiz_visibility
                 }
             });
         }
+    }
+
+    async quizActivity() {
+        quizAct = await quizActivity(this.state.data);
+        console.log(quizAct)
+        // this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
     }
 
     render() {
@@ -60,7 +72,7 @@ class TestInstructions extends Component {
 
                     </View>
                     <View style={{ marginVertical: height(10) }}>
-                        <TouchableOpacity style={styles.botton} onPress={() => this.props.navigation.navigate('mcqScreen')}>
+                        <TouchableOpacity style={styles.botton} onPress={() => this.quizActivity()}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.h3, { color: 'white' }]}>Agree and Continue</Text>
                                 <Icon name='arrowright' type='antdesign' color='white' size={totalSize(2.5)} />

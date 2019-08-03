@@ -61,27 +61,32 @@ export async function subjectList(category, user) {
 
 //////////////// Quiz Activity ///////////////////
 
-export async function quizActivity(currentTime, quizId, userId) {
+export async function quizActivity(quiz) {
+
+  var hours = new Date().getHours()
+  var min = new Date().getMinutes()
+  var currentTime = hours + ':' + min
+
+  let user = await Storage.getItem('user')
+
   let formData = new FormData();
   formData.append('action', 'QUIZ_ACTIVITY');
   formData.append('start_time', currentTime);
-  formData.append('quiz_id', quizId);
-  formData.append('user_id', 2);
+  formData.append('quiz_id', quiz.QUIZ_ID);
+  formData.append('user_id', user.name);
 
   let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
     method: 'POST',
     body: formData
   });
 
-  //console.log(fetchCallback)
+  // console.log('quizActivity: ', fetchCallback)
 
   let responseJson = await fetchCallback.json();
-  //console.log('Quiz Activity:',responseJson);
+  // console.log('Quiz Activity:',responseJson);
 
-  // if(responseJson.status == 200){
-  //   console.log('success',responseJson);
-  //   //Storage.setItem()
-
+  // if(status == 200){
+    // console.log('Quiz Activityy success: ',responseJson);
   // }
   return responseJson;
 }
