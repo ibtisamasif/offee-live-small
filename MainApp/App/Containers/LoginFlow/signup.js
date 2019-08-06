@@ -1,3 +1,4 @@
+//nothing
 // import React, { Component } from 'react';
 // import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, Image } from 'react-native';
 // import { height, width, totalSize } from 'react-native-dimension'
