@@ -1,37 +1,36 @@
 
 import Storage from '../helper/asyncStorage'
 
-export async function login(username, password) {
-  let formData = new FormData();
-  formData.append('action', 'AUTHENTICATE');
-  formData.append('user', username);
-  formData.append('password', password);
+// export async function login(username, password) {
+//   let formData = new FormData();
+//   formData.append('user', username);
+//   formData.append('password', password);
 
-  let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
-    method: 'POST',
-    body: formData
-  });
+//   let fetchCallback = await fetch('https://examination.offee.in/admin/login_controller.php', {
+//     method: 'POST',
+//     body: formData
+//   });
 
-  console.log(fetchCallback)
+//   console.log(fetchCallback)
 
-  let responseJson = await fetchCallback.json();
+//   let responseJson = await fetchCallback.json();
 
-  // let cat = responseJson.cat
-  // let name = responseJson.name
+//   // let cat = responseJson.cat
+//   // let name = responseJson.name
 
-  // console.log(cat);
-  // console.log(name);
+//   // console.log(cat);
+//   // console.log(name);
 
-  // Storage.setItem('cat', cat)
-  // Storage.setItem('name', name)
+//   // Storage.setItem('cat', cat)
+//   // Storage.setItem('name', name)
 
 
-  if (responseJson.status == '5') {
-    console.log('success');
-    Storage.setItem('user', responseJson)
-  }
-  return responseJson;
-}
+//   if (responseJson.status == '5') {
+//     console.log('success');
+//     Storage.setItem('user', responseJson)
+//   }
+//   return responseJson;
+// }
 
 
 ///////////////// FETCH SUBJECT LIST /////////////////////

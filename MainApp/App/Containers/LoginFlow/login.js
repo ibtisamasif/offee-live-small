@@ -4,7 +4,7 @@ import { height, width, totalSize } from 'react-native-dimension';
 import { Icon, Overlay, CheckBox } from 'react-native-elements'
 //import store from '../../Stores/orderStore'
 //import api from '../../lib/api'
-import {login} from '../../backend/api';
+import {login} from '../../backend/ApiAxios';
 import Modal from 'react-native-modal'
 import images from '../../Themes/Images';
 import colors from '../../Themes/Colors'
@@ -47,14 +47,14 @@ class Login extends Component {
     }
     else{
       this.setState({loading: true});
-      let loginData = await login(username, password);
+      let callback = await login(username, password);
       this.setState({loading: false});
 
-      console.log(loginData);
+    //   console.log(callback);
 
-    //   if(loginData.login == 'OK'){
+      if (callback) {
         this.props.navigation.navigate('App');
-    //   }
+      }
 
     }
   }
