@@ -18,25 +18,37 @@ export async function login(username, password) {
     })
       .then(function (response) {
         //handle success
-        // console.log("1", response);
+        console.log("1", response);
         if (response.status == 200) {
 
-          // console.log("2", response.data);
+          console.log("2", response.data);
           var responseData = response.data;
-          responseData = responseData.replace(/ /g, '');
-          responseData = responseData.replace(/\s/g, "");
-          // console.log("3", responseData)
 
-          var jsonWithWhitespaceRemovedJSON = JSON.parse(responseData)
-          // console.log("4", jsonWithWhitespaceRemovedJSON);
-          // console.log("5", jsonWithWhitespaceRemovedJSON.name);
+          // check if responseData is a string or json
 
-          if(jsonWithWhitespaceRemovedJSON.status == "5"){
-            success = true;
-            console.log('success');
-            Storage.setItem('user', jsonWithWhitespaceRemovedJSON)
+          if (isJsonString(responseData)) {
+            console.log('IsString')
+            responseData = responseData.replace(/ /g, '');
+            responseData = responseData.replace(/\s/g, "");
+            console.log("3", responseData)
+
+            var jsonWithWhitespaceRemovedJSON = JSON.parse(responseData)
+            console.log("4", jsonWithWhitespaceRemovedJSON);
+            console.log("5", jsonWithWhitespaceRemovedJSON.name);
+
+            if (jsonWithWhitespaceRemovedJSON.status == "5") {
+              success = true;
+              console.log('success');
+              Storage.setItem('user', jsonWithWhitespaceRemovedJSON)
+            }
+          } else {
+            console.log('IsJSON')
+            if (responseData.status == "5") {
+              success = true;
+              console.log('success');
+              Storage.setItem('user', responseData)
+            }
           }
-        
         }
       })
       .catch(function (err) {
@@ -46,28 +58,37 @@ export async function login(username, password) {
         console.log("aab", err.response.status);
 
         var responseData = err.response.data;
+
+        if (isJsonString(responseData)) {
         responseData = responseData.replace(/ /g, '');
         responseData = responseData.replace(/\s/g, "");
         console.log("3", responseData)
-
         var jsonWithWhitespaceRemovedJSON = JSON.parse(responseData)
         console.log("4", jsonWithWhitespaceRemovedJSON.status);
-
         if (err.response.status == 404) {
-
           console.log('User does not exists')
-          if(jsonWithWhitespaceRemovedJSON.status == "-1"){
+          if (jsonWithWhitespaceRemovedJSON.status == "-1") {
             Alert.alert('User does not exists !')
           }
-          
         } else if (err.response.status == 401) {
-
           console.log('Password is incorrect')
-          if(jsonWithWhitespaceRemovedJSON.status == "-2"){
-          Alert.alert('Password is incorrect !')
+          if (jsonWithWhitespaceRemovedJSON.status == "-2") {
+            Alert.alert('Password is incorrect !')
           }
-        
         }
+      }else {
+        if (err.response.status == 404) {
+          console.log('User does not exists')
+          if (responseData.status == "-1") {
+            Alert.alert('User does not exists !')
+          }
+        } else if (err.response.status == 401) {
+          console.log('Password is incorrect')
+          if (responseData.status == "-2") {
+            Alert.alert('Password is incorrect !')
+          }
+        }
+      }
         throw err;
       });
   } catch (error) {
@@ -141,12 +162,12 @@ export async function subjectList(category, user) {
           // console.log("4", jsonWithWhitespaceRemovedJSON);
           // console.log("5", jsonWithWhitespaceRemovedJSON.name);
 
-          if(jsonWithWhitespaceRemovedJSON.status == "5"){
+          if (jsonWithWhitespaceRemovedJSON.status == "5") {
             success = true;
             console.log('success');
             Storage.setItem('user', jsonWithWhitespaceRemovedJSON)
           }
-        
+
         }
       })
       .catch(function (err) {
@@ -166,17 +187,17 @@ export async function subjectList(category, user) {
         if (err.response.status == 404) {
 
           console.log('User does not exists')
-          if(jsonWithWhitespaceRemovedJSON.status == "-1"){
+          if (jsonWithWhitespaceRemovedJSON.status == "-1") {
             Alert.alert('User does not exists !')
           }
-          
+
         } else if (err.response.status == 401) {
 
           console.log('Password is incorrect')
-          if(jsonWithWhitespaceRemovedJSON.status == "-2"){
-          Alert.alert('Password is incorrect !')
+          if (jsonWithWhitespaceRemovedJSON.status == "-2") {
+            Alert.alert('Password is incorrect !')
           }
-        
+
         }
         throw err;
       });
@@ -238,7 +259,7 @@ export async function quizActivity(quiz) {
   // console.log('Quiz Activity:',responseJson);
 
   // if(status == 200){
-    // console.log('Quiz Activityy success: ',responseJson);
+  // console.log('Quiz Activityy success: ',responseJson);
   // }
   return responseJson;
 }
@@ -260,7 +281,7 @@ export async function getQuestions(quizId) {
   //console.log(fetchCallback)
 
   let responseJson = await fetchCallback.json();
-  console.log('Quiz QUESTIONS:',responseJson);
+  console.log('Quiz QUESTIONS:', responseJson);
 
   // if(responseJson.status == 200){
   //   console.log('success',responseJson);
@@ -318,3 +339,13 @@ export async function submitAnswers(quizId) {
 //       console.error(error);
 //     });
 // }
+
+
+function isJsonString(str) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
