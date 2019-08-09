@@ -10,7 +10,7 @@ const CustomDrawerComponent = (props) => (
         <View style={{ height: height(15), flexDirection: 'row', alignItems: 'center' }}>
             <Image source={require('../../Images/Emptyprofile.jpg')} style={{ height: totalSize(10), width: totalSize(10), borderRadius: 100, marginHorizontal: width(5) }} />
             <View style={{ width: width(30) }}>
-                <Text style={{ fontSize: totalSize(3), fontWeight: 'bold', color: 'black' }}>Adnan Khalil</Text>
+                <Text style={{ fontSize: totalSize(3), fontWeight: 'bold', color: 'black' }}>Lorem Ipsum</Text>
             </View>
         </View>
         <ScrollView>
