@@ -1,10 +1,11 @@
 import { Alert } from 'react-native';
-import Storage from '../helper/asyncStorage'
+import asyncStorage from '../helper/asyncStorage'
 import axios from "axios";
 
 
 export async function login(username, password) {
   let success = false;
+  let parsed_response = null;
   try {
     let formData = new FormData();
     formData.append("user", username);
@@ -18,85 +19,49 @@ export async function login(username, password) {
     })
       .then(function (response) {
         //handle success
-        console.log("1", response);
         if (response.status == 200) {
 
-          console.log("2", response.data);
           var responseData = response.data;
 
           // check if responseData is a string or json
-
           if (isJsonString(responseData)) {
             console.log('IsString')
             responseData = responseData.replace(/ /g, '');
             responseData = responseData.replace(/\s/g, "");
-            console.log("3", responseData)
-
             var jsonWithWhitespaceRemovedJSON = JSON.parse(responseData)
-            console.log("4", jsonWithWhitespaceRemovedJSON);
-            console.log("5", jsonWithWhitespaceRemovedJSON.name);
-
-            if (jsonWithWhitespaceRemovedJSON.status == "5") {
-              success = true;
-              console.log('success');
-              Storage.setItem('user', jsonWithWhitespaceRemovedJSON)
-            }
+            
+            parsed_response = jsonWithWhitespaceRemovedJSON;
           } else {
             console.log('IsJSON')
-            if (responseData.status == "5") {
-              success = true;
-              console.log('success');
-              Storage.setItem('user', responseData)
-            }
+            parsed_response = responseData;
           }
         }
       })
       .catch(function (err) {
         //handle error
-        console.log("a", err);
-        console.log("aa", err.response.data);
-        console.log("aab", err.response.status);
+        // console.log("a", err);
+        // console.log("aa", err.response.data);
+        // console.log("aab", err.response.status);
 
         var responseData = err.response.data;
 
         if (isJsonString(responseData)) {
         responseData = responseData.replace(/ /g, '');
         responseData = responseData.replace(/\s/g, "");
-        console.log("3", responseData)
         var jsonWithWhitespaceRemovedJSON = JSON.parse(responseData)
-        console.log("4", jsonWithWhitespaceRemovedJSON.status);
-        if (err.response.status == 404) {
-          console.log('User does not exists')
-          if (jsonWithWhitespaceRemovedJSON.status == "-1") {
-            Alert.alert('User does not exists !')
-          }
-        } else if (err.response.status == 401) {
-          console.log('Password is incorrect')
-          if (jsonWithWhitespaceRemovedJSON.status == "-2") {
-            Alert.alert('Password is incorrect !')
-          }
-        }
+
+        parsed_response = jsonWithWhitespaceRemovedJSON;
       }else {
-        if (err.response.status == 404) {
-          console.log('User does not exists')
-          if (responseData.status == "-1") {
-            Alert.alert('User does not exists !')
-          }
-        } else if (err.response.status == 401) {
-          console.log('Password is incorrect')
-          if (responseData.status == "-2") {
-            Alert.alert('Password is incorrect !')
-          }
-        }
+        parsed_response = responseData;
       }
         throw err;
       });
   } catch (error) {
-    console.log("b", error);
+    console.log("catch block", error);
     Alert.alert("Something went wrong");
     throw error;
   }
-  return success;
+  return parsed_response;
 };
 
 

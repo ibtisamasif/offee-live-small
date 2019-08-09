@@ -5,6 +5,7 @@ import { Icon, Overlay, CheckBox } from 'react-native-elements'
 //import store from '../../Stores/orderStore'
 //import api from '../../lib/api'
 import {login} from '../../backend/ApiAxios';
+import Storage from '../../helper/asyncStorage'
 import Modal from 'react-native-modal'
 import images from '../../Themes/Images';
 import colors from '../../Themes/Colors'
@@ -50,14 +51,18 @@ class Login extends Component {
       let callback = await login(username, password);
       this.setState({loading: false});
 
-    //   console.log(callback);
+    //   console.log('callback', callback);
 
       if (callback) {
-        this.props.navigation.navigate('App');
+        if (callback.status == "5") {
+              Storage.setItem('user', callback)
+              this.props.navigation.navigate('App');
+        }else if (callback.status == "-3" || callback.status == "-2" || callback.status == "-1") {
+            alert(callback.message);
+        }
       }
-
-    }
   }
+}
 
     render() {
         return (
