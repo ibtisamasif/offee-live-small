@@ -35,60 +35,60 @@ import Storage from '../helper/asyncStorage'
 
 ///////////////// FETCH SUBJECT LIST /////////////////////
 
-export async function subjectList(category, user) {
-  let formData = new FormData();
-  formData.append('action', 'FETCH_SUBJECTS');
-  formData.append('cat', category);
-  formData.append('user', user);
+// export async function subjectList(category, user) {
+//   let formData = new FormData();
+//   formData.append('action', 'FETCH_SUBJECTS');
+//   formData.append('cat', category);
+//   formData.append('user', user);
 
-  let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
-    method: 'POST',
-    body: formData
-  });
+//   let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
+//     method: 'POST',
+//     body: formData
+//   });
 
-  console.log(fetchCallback)
+//   console.log(fetchCallback)
 
-  let responseJson = await fetchCallback.json();
-  if (responseJson.status == 200) {
-    console.log('success', responseJson);
-    //Storage.setItem()
+//   let responseJson = await fetchCallback.json();
+//   if (responseJson.status == 200) {
+//     console.log('success', responseJson);
+//     //Storage.setItem()
 
-  }
-  return responseJson;
-}
+//   }
+//   return responseJson;
+// }
 
 
 //////////////// Quiz Activity ///////////////////
 
-export async function quizActivity(quiz) {
+// // export async function quizActivity(quiz) {
 
-  var hours = new Date().getHours()
-  var min = new Date().getMinutes()
-  var currentTime = hours + ':' + min
+// //   var hours = new Date().getHours()
+// //   var min = new Date().getMinutes()
+// //   var currentTime = hours + ':' + min
 
-  let user = await Storage.getItem('user')
+// //   let user = await Storage.getItem('user')
 
-  let formData = new FormData();
-  formData.append('action', 'QUIZ_ACTIVITY');
-  formData.append('start_time', currentTime);
-  formData.append('quiz_id', quiz.QUIZ_ID);
-  formData.append('user_id', user.name);
+// //   let formData = new FormData();
+// //   formData.append('action', 'QUIZ_ACTIVITY');
+// //   formData.append('start_time', currentTime);
+// //   formData.append('quiz_id', quiz.QUIZ_ID);
+// //   formData.append('user_id', user.name);
 
-  let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
-    method: 'POST',
-    body: formData
-  });
+// //   let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
+// //     method: 'POST',
+// //     body: formData
+// //   });
 
-  // console.log('quizActivity: ', fetchCallback)
+//   // console.log('quizActivity: ', fetchCallback)
 
-  let responseJson = await fetchCallback.json();
-  // console.log('Quiz Activity:',responseJson);
+//   let responseJson = await fetchCallback.json();
+//   // console.log('Quiz Activity:',responseJson);
 
-  // if(status == 200){
-    // console.log('Quiz Activityy success: ',responseJson);
-  // }
-  return responseJson;
-}
+//   // if(status == 200){
+//     // console.log('Quiz Activityy success: ',responseJson);
+//   // }
+//   return responseJson;
+// }
 
 
 

@@ -51,7 +51,7 @@ class Login extends Component {
       let callback = await login(username, password);
       this.setState({loading: false});
 
-    //   console.log('callback', callback);
+      console.log('callback', callback);
 
       if (callback) {
         if (callback.status == "5") {

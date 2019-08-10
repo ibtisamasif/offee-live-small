@@ -7,7 +7,7 @@ import CountDown from 'react-native-countdown-component';
 import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
-import {getQuestions} from '../../../backend/api'
+import {getQuestions} from '../../../backend/ApiAxios'
 
 _this = null
 class MCQ extends Component {

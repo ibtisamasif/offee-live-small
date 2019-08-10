@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
-import {quizActivity} from '../../../backend/api'
+import {quizActivity} from '../../../backend/ApiAxios'
 
 class TestInstructions extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class TestInstructions extends Component {
 
     async quizActivity() {
         quizAct = await quizActivity(this.state.data);
-        console.log(quizAct)
+        console.log('callbackQuizActivity: ', quizAct);
         this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
     }
 

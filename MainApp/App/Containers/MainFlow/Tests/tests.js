@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import Modal from 'react-native-modal'
-import { subjectList } from '../../../backend/api'
+import { subjectList } from '../../../backend/ApiAxios'
 import Storage from '../../../helper/asyncStorage'
 
 
@@ -24,8 +24,6 @@ export default class Tests extends Component {
     logOut = () => {
         this._toggleModalLogout()
         this.props.navigation.navigate('Auth')
-        // Storage.removeItem('cat')
-        // Storage.removeItem('name')
         Storage.removeItem('user');
         Storage.clear();
     }
@@ -162,10 +160,12 @@ export class TestsList extends Component {
     async componentDidMount() {
         let user = await Storage.getItem('user');
         loginData = await subjectList(user.cat, user.name);
-        this.setState({
-            tests: loginData.DATA
-        })
-        console.log('api data', loginData.DATA);
+        console.log('api data', loginData);
+        if(loginData){
+            this.setState({
+                tests: loginData
+            })
+        }
     }
 
     async EnterToTest(item) {
