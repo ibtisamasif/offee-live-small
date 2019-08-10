@@ -7,7 +7,8 @@ import CountDown from 'react-native-countdown-component';
 import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
-import { thisExpression } from '@babel/types';
+import {getQuestions} from '../../../backend/ApiAxios'
+
 _this = null
 class MCQ extends Component {
     constructor(props) {
@@ -32,105 +33,25 @@ class MCQ extends Component {
                 { id: 4, status: 2 },
                 { id: 5, status: 2 },
                 { id: 6, status: 2 },
-                { id: 7, status: 1 },
-                { id: 8, status: 1 },
-                { id: 9, status: 1 },
-                { id: 10, status: 1 },
-                { id: 11, status: 1 },
-                { id: 12, status: 1 },
-                { id: 13, status: 3 },
-                { id: 14, status: 3 },
-                { id: 15, status: 3 },
-                { id: 16, status: 3 },
-                { id: 17, status: 3 },
-                { id: 18, status: 3 },
-                { id: 19, status: 3 },
-                { id: 20, status: 3 },
-                { id: 21, status: 1 },
-                { id: 22, status: 1 },
-                { id: 23, status: 1 },
-                { id: 24, status: 1 },
-                { id: 25, status: 1 },
-                { id: 26, status: 4 },
-                { id: 27, status: 4 },
-                { id: 28, status: 4 },
-                { id: 29, status: 4 },
-                { id: 30, status: 4 },
-                { id: 31, status: 1 },
-                { id: 32, status: 1 },
-                { id: 33, status: 2 },
-                { id: 34, status: 2 },
-                { id: 35, status: 2 },
-                { id: 36, status: 2 },
-                { id: 37, status: 1 },
-                { id: 38, status: 1 },
-                { id: 39, status: 1 },
-                { id: 40, status: 1 },
-                { id: 41, status: 1 },
-                { id: 42, status: 1 },
-                { id: 43, status: 3 },
-                { id: 44, status: 3 },
-                { id: 45, status: 3 },
-                { id: 46, status: 3 },
-                { id: 47, status: 3 },
-                { id: 48, status: 3 },
-                { id: 49, status: 3 },
-                { id: 50, status: 3 },
-                { id: 51, status: 1 },
-                { id: 52, status: 1 },
-                { id: 53, status: 1 },
-                { id: 54, status: 1 },
-                { id: 55, status: 1 },
-                { id: 56, status: 4 },
-                { id: 57, status: 4 },
-                { id: 58, status: 4 },
-                { id: 59, status: 4 },
-                { id: 60, status: 4 },
-                { id: 61, status: 1 },
-                { id: 62, status: 1 },
-                { id: 63, status: 2 },
-                { id: 64, status: 2 },
-                { id: 65, status: 2 },
-                { id: 66, status: 2 },
-                { id: 67, status: 1 },
-                { id: 68, status: 1 },
-                { id: 69, status: 1 },
-                { id: 70, status: 1 },
-                { id: 71, status: 1 },
-                { id: 72, status: 1 },
-                { id: 73, status: 3 },
-                { id: 74, status: 3 },
-                { id: 75, status: 3 },
-                { id: 76, status: 3 },
-                { id: 77, status: 3 },
-                { id: 78, status: 3 },
-                { id: 79, status: 3 },
-                { id: 80, status: 3 },
-                { id: 81, status: 1 },
-                { id: 82, status: 1 },
-                { id: 83, status: 1 },
-                { id: 84, status: 1 },
-                { id: 85, status: 1 },
-                { id: 86, status: 4 },
-                { id: 87, status: 4 },
-                { id: 88, status: 4 },
-                { id: 89, status: 4 },
-                { id: 90, status: 4 },
-                { id: 91, status: 1 },
-                { id: 92, status: 1 },
-                { id: 93, status: 1 },
-                { id: 94, status: 1 },
-                { id: 95, status: 1 },
-                { id: 96, status: 4 },
-                { id: 97, status: 4 },
-                { id: 98, status: 4 },
-                { id: 99, status: 4 },
-                { id: 100, status: 4 },
+                { id: 7, status: 1 }
             ]
         };
     }
     componentDidMount() {
         _this = this
+        this.getCurrentItem();
+    }
+
+    async getCurrentItem() {
+        let quiz = this.props.navigation.getParam("item");
+        questionsData = await getQuestions(quiz.QUIZ_ID);
+        if (questionsData) {
+            this.setState({
+                questions: questionsData.questions,
+                //todo
+            })
+            console.log('api questions data', questionsData.questions[0])
+        }
     }
 
     chooseOption = async (item) => {
@@ -162,7 +83,7 @@ class MCQ extends Component {
             <View style={styles.Maincontainer}>
                 <View style={styles.header}>
                     <View style={styles.headerIconContainer}>
-                        <Progress.Circle progress={this.state.timeProgress} thickness={'0'} size={totalSize(5)} unfilledColor='gray' color='white' />
+                        <Progress.Circle progress={this.state.timeProgress} thickness={0} size={totalSize(5)} unfilledColor='gray' color='white' />
                     </View>
                     <View style={{ flex: 5.5, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: 'transparent' }}>
                         <View>
@@ -209,15 +130,45 @@ class MCQ extends Component {
                     <View style={{ width: width(100), backgroundColor: 'white', alignItems: 'center', marginVertical: totalSize(1) }}>
                         <View style={{ width: width(90), flexDirection: 'row', marginVertical: totalSize(1) }}>
 
+
+                            <View style={{ flex: 2, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{ backgroundColor: 'gray', width: totalSize(3), height: totalSize(3), borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q1</Text>
+                                </View>
+                                <CountDown
+                                    size={totalSize(1.5)}
+                                    until={1 * 60}
+                                    onFinish={() => alert('Time for this question finished')}
+                                    digitStyle={{ backgroundColor: 'transparent' }}
+                                    digitTxtStyle={{ color: 'gray' }}
+                                    timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
+                                    separatorStyle={{ color: 'gray' }}
+                                    timeToShow={['M', 'S']}
+                                    timeLabels={{ m: null, s: null }}
+                                    showSeparator
+                                />
+                                <View style={{ width: totalSize(0.5), height: totalSize(3), borderRightWidth: 0.5, borderRightColor: 'gray' }}>
+                                </View>
+                                <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text>
+                                <Text style={[styles.h3, { color: 'gray' }]}>  -0.3  </Text>
+                            </View>
+
+                            <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Icon name='alert-triangle' color='gray' type='feather' size={totalSize(2)} iconStyle={{ marginHorizontal: totalSize(2) }} />
+                                <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
+                            </View>
+
+
+
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
-                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>Who invented the modern perodic table?</Text>
+                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>{this.state.questions[0].question_text}</Text>
                         </View>
                     </View>
                     {
                         this.state.options.map((item, key) => {
                             return (
-                                <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth:1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
+                                <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                     <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
                                         <View style={{ flex: 0.1 }}>
                                             <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text>
@@ -230,7 +181,7 @@ class MCQ extends Component {
                             )
                         })
                     }
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('mcqScreen')} style={{ width: width(100),marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('mcqScreen')} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
                         <View style={{ marginVertical: totalSize(2) }}>
                             <Text style={[styles.h3, { color: 'white' }]}>Next Question</Text>
                         </View>

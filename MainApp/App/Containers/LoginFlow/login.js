@@ -4,7 +4,8 @@ import { height, width, totalSize } from 'react-native-dimension';
 import { Icon, Overlay, CheckBox } from 'react-native-elements'
 //import store from '../../Stores/orderStore'
 //import api from '../../lib/api'
-import {login} from '../../backend/api';
+import {login} from '../../backend/ApiAxios';
+import Storage from '../../helper/asyncStorage'
 import Modal from 'react-native-modal'
 import images from '../../Themes/Images';
 import colors from '../../Themes/Colors'
@@ -35,10 +36,10 @@ class Login extends Component {
 
     manageOverlay = () => this.setState({ overlayVisible: !this.state.overlayVisible })
 
-    goto_signup = () => {
-        this.props.navigation.navigate('signup')
-        this._toggleModalSelectSignUp()
-    }
+    // goto_signup = () => {
+    //     this.props.navigation.navigate('signup')
+    //     this._toggleModalSelectSignUp()
+    // }
 
     async onLoginFunc() {
       const { username, password} = this.state;
@@ -47,17 +48,21 @@ class Login extends Component {
     }
     else{
       this.setState({loading: true});
-      let loginData = await login(username, password);
+      let callback = await login(username, password);
       this.setState({loading: false});
 
-      console.log(loginData);
+      console.log('callback', callback);
 
-      // if(loginData.login == 'OK'){
-      //   this.props.navigation.navigate('App');
-      // }
-
-    }
+      if (callback) {
+        if (callback.status == "5") {
+              Storage.setItem('user', callback)
+              this.props.navigation.navigate('App');
+        }else if (callback.status == "-3" || callback.status == "-2" || callback.status == "-1") {
+            alert(callback.message);
+        }
+      }
   }
+}
 
     render() {
         return (
@@ -72,12 +77,12 @@ class Login extends Component {
                             <View style={[styles.txtContainer, {}]}>
                                 <Text style={[styles.welcome, { fontSize: totalSize(3.5), color: colors.Offeeblue }]}>Login</Text>
                             </View>
-                            <View style={[styles.txtContainer, { flexDirection: 'row' }]}>
+                            {/* <View style={[styles.txtContainer, { flexDirection: 'row' }]}>
                                 <Text style={[styles.welcome, { fontSize: totalSize(1.5), fontWeight: 'normal' }]}>DON'T HAVE AN ACCOUNT? </Text>
                                 <TouchableOpacity onPress={() => this._toggleModalSelectSignUp()}>
                                     <Text style={[styles.welcome, { fontSize: totalSize(1.5), color: colors.Offeeblue, fontWeight: 'normal' }]}>SIGN UP!</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
                             <View style={styles.InputContainer}>
                                 <Icon name='email' color='gray' size={totalSize(3)} />
                                 <TextInput
@@ -135,7 +140,7 @@ class Login extends Component {
                                 <Text style={[styles.welcome, { fontSize: totalSize(1.5), color: colors.Offeeblue }]} onPress={() => this._toggleModalForgetPassword()} >Forgot Password?</Text>
                             </View>
                             <View style={styles.btnContainer}>
-                                <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('App')}>
+                                <TouchableOpacity style={styles.button} onPress={() => this.onLoginFunc()}>
                                     <View style={styles.btnTxtContainer}>
                                         {
                                             this.state.loading === true ?
@@ -221,11 +226,11 @@ class Login extends Component {
                                         <Text style={[styles.welcome, { fontSize: totalSize(2.5) }]}>Register Your Free</Text>
                                         <Text style={[styles.welcome, { fontSize: totalSize(2.5) }]}>Account</Text>
                                     </View>
-                                    <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                    {/* <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
                                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
                                             <Text style={[styles.welcome, { fontSize: totalSize(3), color: colors.Offeeblue }]} onPress={() => this.goto_signup()}>Sign Up Now</Text>
                                         </View>
-                                    </View>
+                                    </View> */}
                                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
                                         {/* <TouchableOpacity  style={[styles.button, { height: height(6), width: width(40) }]}>
                                             <Text style={{ fontSize: totalSize(2), color: 'white' }}>Send</Text>

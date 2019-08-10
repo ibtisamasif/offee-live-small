@@ -3,13 +3,39 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
-
+import {quizActivity} from '../../../backend/ApiAxios'
 
 class TestInstructions extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: {}
         };
+    }
+
+    componentDidMount() {
+        this.getCurrentItem();
+    }
+
+    async getCurrentItem() {
+        let item = this.props.navigation.getParam("oneSubject");
+        console.log('oneSubject:', item)
+        if (item) {
+            this.setState({
+                data: {
+                    QUIZ_ID: item.QUIZ_ID,
+                    quiz_name: item.quiz_name,
+                    quiz_duration: item.quiz_duration,
+                    quiz_visibility: item.quiz_visibility
+                }
+            });
+        }
+    }
+
+    async quizActivity() {
+        quizAct = await quizActivity(this.state.data);
+        console.log('callbackQuizActivity: ', quizAct);
+        this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
     }
 
     render() {
@@ -21,7 +47,7 @@ class TestInstructions extends Component {
                     </View>
                     <View style={{ width: width(80), flexDirection: 'row', marginVertical: height(1) }}>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: 90 mins</Text>
+                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: {this.state.data.quiz_duration} mins</Text>
                         </View>
                         <View style={{ flex: 1, alignItems: 'center', }}>
                             <Text style={[styles.h4, { fontWeight: 'bold' }]}>Maximum Marks: 100</Text>
@@ -42,9 +68,9 @@ class TestInstructions extends Component {
 
                     </View>
                     <View style={{ marginVertical: height(10) }}>
-                        <TouchableOpacity style={styles.botton} onPress={() => this.props.navigation.navigate('mcqScreen')}>
+                        <TouchableOpacity style={styles.botton} onPress={() => this.quizActivity()}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.h3, { color: 'white' }]}>Agree and Continue       </Text>
+                                <Text style={[styles.h3, { color: 'white' }]}>Agree and Continue</Text>
                                 <Icon name='arrowright' type='antdesign' color='white' size={totalSize(2.5)} />
                             </View>
                         </TouchableOpacity>
