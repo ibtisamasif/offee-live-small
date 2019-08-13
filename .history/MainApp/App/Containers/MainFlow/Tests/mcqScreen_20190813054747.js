@@ -85,7 +85,7 @@ class MCQ extends Component {
 
     render() {
         return (
-            <View style={styles.MainContainer}>
+            <View style={styles.Maincontainer}>
                 <View style={styles.header}>
                     <View style={styles.headerIconContainer}>
                         <Progress.Circle progress={this.state.timeProgress} thickness={0} size={totalSize(5)} unfilledColor='gray' color='white' />
@@ -382,7 +382,7 @@ class MCQ extends Component {
 export default MCQ;
 
 const styles = StyleSheet.create({
-    MainContainer: {
+    Maincontainer: {
         flex: 1,
         alignItems: 'center',
     },
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
 
         //marginVertical: height(0.5)
     },
-    button: {
+    botton: {
         height: height(6),
         width: width(90),
         backgroundColor: colors.Offeeblue,
