@@ -155,11 +155,12 @@ export async function getQuestions(quizId) {
   let parsed_response = null;
   try{
   let formData = new FormData();
+  formData.append('action', "GETQUIZDETAILS"),
   formData.append('quiz_id', quizId);
 
   await axios({
     method: "post",
-    url: "https://examination.offee.in/admin/get_quiz_details_controller.php",
+    url: "https://examination.offee.in/admin/Controller.php",
     data: formData,
     config: { headers: { "Content-Type": "application/json" } }
   })
