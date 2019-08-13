@@ -143,7 +143,7 @@ class MCQ extends Component {
                                 </View>
                                 <CountDown
                                     size={totalSize(1.5)}
-                                    until={parseInt(this.state.quiz.quiz_duration, 10)/this.state.questions.length}
+                                    until={parseInt(this.state.quiz.quiz_duration, 10)}
                                     onFinish={() => alert('Time for this question finished')}
                                     digitStyle={{ backgroundColor: 'transparent' }}
                                     digitTxtStyle={{ color: 'gray' }}
