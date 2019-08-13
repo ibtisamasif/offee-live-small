@@ -20,22 +20,12 @@ class MCQ extends Component {
             timeProgress: 5,
             language: false,
             isfav: false,
-            callbackObject: [],
             quiz: {},
-            questions: [
-                { id: 1, status: 1 },
-                { id: 2, status: 1 },
-                { id: 3, status: 2 },
-                { id: 4, status: 2 },
-                { id: 5, status: 2 },
-                { id: 6, status: 2 },
-                { id: 7, status: 1 }
-            ],
             options: [
                 { id: 1, answer: 'Ernest Rutherford', correct: false, isClicked: false },
                 { id: 2, answer: 'marie Curie', correct: false, isClicked: false },
                 { id: 3, answer: 'John Dalton', correct: false, isClicked: false },
-                { id: 4, answer: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                { id: 4, answer: 'Dmitri Mendeleev', correct: true, isClicked: false }
             ]
         };
     }
@@ -49,10 +39,7 @@ class MCQ extends Component {
         callback = await getQuestions(quiz.QUIZ_ID);
         if (callback) {
             this.setState({
-                callbackObject: callback,
-                quiz: callback.quiz[0],
-                questions: callback.questions
-                //todo
+                quiz: callback
             })
             console.log('api whole data', callback)
         }
@@ -96,7 +83,7 @@ class MCQ extends Component {
                         <View>
                             <CountDown
                                 size={totalSize(1.5)}
-                                until={parseInt(this.state.quiz.quiz_duration, 10)}
+                                // until={parseInt(this.state.quiz.quiz[0].quiz_duration, 10)}
                                 onFinish={() => alert('Finished')}
                                 digitStyle={{ backgroundColor: 'transparent' }}
                                 digitTxtStyle={{ color: 'white' }}
@@ -106,7 +93,7 @@ class MCQ extends Component {
                                 timeLabels={{ m: null, s: null }}
                                 showSeparator
                             />
-                            <Text style={{ fontSize: totalSize(1.5), color: colors.cloud, left: 8 }}>{this.state.quiz.quiz_name}</Text>
+                            <Text style={{ fontSize: totalSize(1.5), color: colors.cloud, left: 8 }}>{this.state.quiz.quiz[0].quiz_name}</Text>
                         </View>
                     </View>
                     <View style={styles.headerIconContainer}>
@@ -144,7 +131,7 @@ class MCQ extends Component {
                                 </View>
                                 <CountDown
                                     size={totalSize(1.5)}
-                                    until={parseInt(this.state.quiz.quiz_duration, 10)}
+                                    // until={parseInt(this.state.quiz.quiz[0].quiz_duration, 10)}
                                     onFinish={() => alert('Time for this question finished')}
                                     digitStyle={{ backgroundColor: 'transparent' }}
                                     digitTxtStyle={{ color: 'gray' }}
@@ -165,15 +152,13 @@ class MCQ extends Component {
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
 
-
-
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
-                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>{this.state.questions[0].question_text}</Text>
+                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>{this.state.quiz.questions[0].question_text}</Text>
                         </View>
                     </View>
                     {
-                        this.state.options.map((item, key) => {
+                        {/* this.state.options.map((item, key) => {
                             return (
                                 <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                     <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
@@ -186,7 +171,7 @@ class MCQ extends Component {
                                     </View>
                                 </TouchableOpacity>
                             )
-                        })
+                        }) */}
                     }
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('mcqScreen')} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
                         <View style={{ marginVertical: totalSize(2) }}>

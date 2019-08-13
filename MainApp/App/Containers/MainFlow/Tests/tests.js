@@ -222,7 +222,7 @@ export class TestsList extends Component {
                                                             <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
                                                         </View>
                                                         <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.quiz_duration}</Text>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{((item.quiz_duration)/60)*1}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>

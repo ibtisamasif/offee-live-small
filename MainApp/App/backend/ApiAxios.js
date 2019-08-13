@@ -46,7 +46,7 @@ export async function login(username, password) {
     throw error;
   }
   return parsed_response;
-};
+}
 
 
 ///////////////// FETCH SUBJECT LIST /////////////////////
@@ -91,7 +91,7 @@ export async function subjectList(category, user) {
     throw error;
   }
   return parsed_response;
-};
+}
 
 
 //////////////// Quiz Activity ///////////////////
@@ -145,7 +145,7 @@ export async function quizActivity(quiz) {
     throw error;
   }
   return parsed_response;
-};
+}
 
 
 
@@ -155,7 +155,7 @@ export async function getQuestions(quizId) {
   let parsed_response = null;
   try{
   let formData = new FormData();
-  formData.append('action', 'GETQUIZDETAILS');
+  formData.append('action', "GETQUIZDETAILS"),
   formData.append('quiz_id', quizId);
 
   await axios({
@@ -186,12 +186,12 @@ export async function getQuestions(quizId) {
       throw err;
     });
   } catch (error) {
-    console.log("catchGetQuestionsy", error);
+    console.log("catchGetQuestions", error);
     Alert.alert("Something went wrong");
     throw error;
   }
   return parsed_response;
-};
+}
 
 
 //////////////// Submit Answers ///////////////////

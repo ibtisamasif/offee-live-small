@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
-import {quizActivity} from '../../../backend/ApiAxios'
+import { quizActivity } from '../../../backend/ApiAxios'
 
 class TestInstructions extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class TestInstructions extends Component {
     async quizActivity() {
         quizAct = await quizActivity(this.state.data);
         console.log('callbackQuizActivity: ', quizAct);
-        this.props.navigation.navigate('mcqScreen', {item: this.state.data, quizActivity: quizAct})
+        this.props.navigation.navigate('mcqScreen', { item: this.state.data, quizActivity: quizAct })
     }
 
     render() {
@@ -43,11 +43,11 @@ class TestInstructions extends Component {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.Maincontainer}>
                     <View style={{ marginVertical: height(2) }}>
-                        <Text style={styles.h2}> IBPS - Clerk Teat 4 </Text>
+                        <Text style={styles.h2}> {this.state.data.quiz_name} </Text>
                     </View>
                     <View style={{ width: width(80), flexDirection: 'row', marginVertical: height(1) }}>
                         <View style={{ flex: 1 }}>
-                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: {this.state.data.quiz_duration} mins</Text>
+                            <Text style={[styles.h4, { fontWeight: 'bold' }]}>Duration: {((this.state.data.quiz_duration) / 60) * 1} mins</Text>
                         </View>
                         <View style={{ flex: 1, alignItems: 'center', }}>
                             <Text style={[styles.h4, { fontWeight: 'bold' }]}>Maximum Marks: 100</Text>
