@@ -50,6 +50,7 @@ class MCQ extends Component {
             this.setState({
                 quiz: callback,
                 questions: callback.questions
+                options: callback.questions.options
                 //todo
             })
             console.log('api whole data', callback)
@@ -162,7 +163,6 @@ class MCQ extends Component {
                             <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
-
 
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
