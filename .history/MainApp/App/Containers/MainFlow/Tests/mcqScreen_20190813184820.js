@@ -163,6 +163,8 @@ class MCQ extends Component {
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
 
+
+
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
                             <Text style={[styles.h3, { fontWeight: 'normal' }]}>{this.state.questions[0].question_text}</Text>

@@ -160,8 +160,11 @@ class MCQ extends Component {
                             </View>
 
                             <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Icon name='alert-triangle' color='gray' type='feather' size={totalSize(2)} iconStyle={{ marginHorizontal: totalSize(2) }} />
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
+
+
 
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>

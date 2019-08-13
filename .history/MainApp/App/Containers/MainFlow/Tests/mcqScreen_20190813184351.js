@@ -108,7 +108,7 @@ class MCQ extends Component {
                             <Text style={{ fontSize: totalSize(1.5), color: colors.cloud, left: 8 }}>{this.state.quiz.quiz_name}</Text>
                         </View>
                     </View>
-                    {/* <View style={styles.headerIconContainer}>
+                    <View style={styles.headerIconContainer}>
                         <TouchableOpacity>
                             <View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -127,7 +127,7 @@ class MCQ extends Component {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                    </View> */}
+                    </View>
                     <TouchableOpacity style={[styles.headerIconContainer, { backgroundColor: 'transparent' }]} onPress={this._toggleModalQuestions}>
                         <Icon name='menufold' type='antdesign' color='white' size={totalSize(3)} />
                     </TouchableOpacity>
@@ -160,8 +160,11 @@ class MCQ extends Component {
                             </View>
 
                             <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Icon name='alert-triangle' color='gray' type='feather' size={totalSize(2)} iconStyle={{ marginHorizontal: totalSize(2) }} />
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
+
+
 
                         </View>
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
