@@ -31,10 +31,10 @@ class MCQ extends Component {
                 { id: 7, status: 1 }
             ],
             options: [
-                { id: 1, answer: 'Ernest Rutherford', correct: false, isClicked: false },
-                { id: 2, answer: 'marie Curie', correct: false, isClicked: false },
-                { id: 3, answer: 'John Dalton', correct: false, isClicked: false },
-                { id: 4, answer: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
             ]
         };
     }
@@ -49,7 +49,8 @@ class MCQ extends Component {
         if (callback) {
             this.setState({
                 quiz: callback,
-                questions: callback.questions
+                questions: callback.questions,
+                options: callback.questions[0].question_options
                 //todo
             })
             console.log('api whole data', callback)
@@ -175,10 +176,10 @@ class MCQ extends Component {
                                 <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                     <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
                                         <View style={{ flex: 0.1 }}>
-                                            <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text>
+                                            {/* <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text> */}
                                         </View>
                                         <View style={{ flex: 0.9 }}>
-                                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>{item.answer}</Text>
+                                            <Text style={[styles.h3, { fontWeight: 'normal' }]}>{item.option_text}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
