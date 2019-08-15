@@ -90,21 +90,20 @@ class MCQ extends Component {
             // console.log('api oneQuestion', oneQuestion)
         }
     }
-
     chooseOption = async (item) => {
         this.setState({ loading_click: true })
-        for (let i = 0; i < this.state.options.length; i++) {
-            this.state.options[i].isClicked = false
-            console.log(this.state.options[i])
+        for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
+            this.state.questions[this.state.index].question_options[i].isClicked = false
+            console.log(this.state.questions[this.state.index].question_options[i])
         }
-        for (let j = 0; j < this.state.options.length; j++) {
-            if (item.id == this.state.options[j].id) {
-                this.state.options[j].isClicked = true
-                console.log(this.state.options[j])
+        for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
+            if (item.id == this.state.questions[this.state.index].question_options[j].id) {
+                this.state.questions[this.state.index].question_options[j].isClicked = true
+                console.log(this.state.questions[this.state.index].question_options[j])
             }
         }
         this.setState({ loading_click: false })
-        // console.warn('options===>', this.state.options)
+        // console.warn('options===>', this.state.questions[this.state.index].question_options)
     }
 
     goToNext = () => {
