@@ -89,7 +89,16 @@ class MCQ extends Component {
             console.log('api whole data1', callback.questions)
             // console.log('api oneQuestion', oneQuestion)
         }
+        this.addIdToQuestionsArray()
     }
+
+    addIdToQuestionsArray(){
+        for (let i = 0; i < this.state.questions.length; i++) {
+            this.state.questions[i].id = i
+            // console.log(this.state.questions[i])
+        }
+    }
+
     chooseOption = async (item) => {
         this.setState({ loading_click: true })
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
@@ -184,8 +193,6 @@ class MCQ extends Component {
                 <View style={styles.container}>
                     <View style={{ width: width(100), backgroundColor: 'white', alignItems: 'center', marginVertical: totalSize(1) }}>
                         <View style={{ width: width(90), flexDirection: 'row', marginVertical: totalSize(1) }}>
-
-
                             <View style={{ flex: 2, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
                                 <View style={{ backgroundColor: 'gray', width: totalSize(3), height: totalSize(3), borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
                                     <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q1</Text>
@@ -211,9 +218,8 @@ class MCQ extends Component {
                             <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
                             </View>
-
-
                         </View>
+
                         <View style={{ width: width(90), marginVertical: totalSize(1.5) }}>
                             <Text style={[styles.h3, { fontWeight: 'normal' }]}>
                             {
@@ -326,19 +332,25 @@ class MCQ extends Component {
                                         </View>
                                     </View>
                                 </View>
-                                {/* <View style={{ flex: 7, backgroundColor: 'transparent' }}>
+                                <View style={{ flex: 7, backgroundColor: 'transparent' }}>
+                                
                                     <FlatGrid
                                         itemDimension={totalSize(5)}
                                         items={this.state.questions}
                                         renderItem={({ item }) => (
                                             <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
                                                 <TouchableOpacity onPress={this._toggleModalQuestions} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
-                                                    <Text style={{}}>{item.id}</Text>
+                                                    <Text>
+                                                    {   
+                                                        item.id
+                                                    }
+                                                    </Text>
                                                 </TouchableOpacity>
                                             </View>
                                         )}
                                     />
-                                </View> */}
+                                
+                                </View>
                             </View>
                             <View style={{ flex: .2, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
                                 <TouchableOpacity onPress={() => this.VerifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: 'gray', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
