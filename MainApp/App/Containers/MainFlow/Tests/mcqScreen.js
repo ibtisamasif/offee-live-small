@@ -74,6 +74,16 @@ class MCQ extends Component {
         // console.warn('options===>', this.state.options)
     }
 
+    moveNext = () => {
+
+        let i = options.indexOf(this.state.index)
+     
+        if(i >= 0 && i < options.length)
+               this.setState({
+                  index: options[i + 1]
+               })
+         }
+
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
     VerifysubmitTest = () => {
@@ -186,7 +196,7 @@ class MCQ extends Component {
                             )
                         })
                     }
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('mcqScreen')} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => this.moveNext} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
                         <View style={{ marginVertical: totalSize(2) }}>
                             <Text style={[styles.h3, { color: 'white' }]}>Next Question</Text>
                         </View>
