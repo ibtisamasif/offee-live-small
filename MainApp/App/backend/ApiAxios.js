@@ -195,13 +195,20 @@ export async function getQuestions(quizId) {
 
 //////////////// Submit Answers ///////////////////
 
-export async function submitAnswers(quizId, userId, userActivity, endtime, data) {
+export async function submitAnswers(quizId, userActivity, data) {
+
+  var hours = new Date().getHours()
+  var min = new Date().getMinutes()
+  var currentTime = hours + ':' + min
+
+  let user = await Storage.getItem('user')
+
   let formData = new FormData();
   formData.append('action', 'SUBMIT_ANSWER');
   formData.append('quiz_id', quizId);
-  formData.append('userId', userId);
+  formData.append('userId', user.name);
   formData.append('useractivity', userActivity);
-  formData.append('endtime', endtime);
+  formData.append('endtime', currentTime);
   formData.append('data', data);
 
   let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {

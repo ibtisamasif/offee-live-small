@@ -7,7 +7,7 @@ import CountDown from 'react-native-countdown-component';
 import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
-import { getQuestions } from '../../../backend/ApiAxios'
+import { getQuestions, submitAnswers } from '../../../backend/ApiAxios'
 
 _this = null
 class MCQ extends Component {
@@ -94,7 +94,7 @@ class MCQ extends Component {
 
     setFav() {
         this.setState({ isfav: !this.state.isfav })
-        console.log('setting red of: ', this.state.index)
+        // console.log('setting red of: ', this.state.index)
         this.state.questions[this.state.index].status = 2
     }
 
@@ -102,12 +102,12 @@ class MCQ extends Component {
         this.setState({ loading_click: true })
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
             this.state.questions[this.state.index].question_options[i].isClicked = false
-            console.log(this.state.questions[this.state.index].question_options[i])
+            // console.log(this.state.questions[this.state.index].question_options[i])
         }
         for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
-                console.log(this.state.questions[this.state.index].question_options[j])
+                // console.log(this.state.questions[this.state.index].question_options[j])
                 this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
             }
         }
@@ -120,15 +120,15 @@ class MCQ extends Component {
 
         if (this.state.questions[this.state.index].status === 1) {
             //do nothing
-            console.log('1')
+            // console.log('1')
         } else if (this.state.questions[this.state.index].status === 2) {
             //do nothing
-            console.log('2')
+            // console.log('2')
         } else if (this.state.questions[this.state.index].status === 3) {
             //do nothing
-            console.log('3')
+            // console.log('3')
         } else {
-            console.log('none')
+            // console.log('none')
             this.state.questions[this.state.index].status = 3
         }
     }
@@ -143,13 +143,20 @@ class MCQ extends Component {
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
     
-    VerifysubmitTest() {
+    async VerifysubmitTest() {
         this._toggleModalSubmit()
-        this.props.navigation.replace('testResult')
+
+        let quizActivity = this.props.navigation.getParam("quizActivity");
+        console.log("quizActivity: ", quizActivity.user_activity)
+        console.log("QuestionsArray: ", this.state.questions)
+
+        // this.props.navigation.replace('testResult')
         //hit Submit api here
-        // callback = await submitAnswers(quiz.QUIZ_ID, "", "", "", "");
-        // if (callback) {
-        // }
+        let callback = await submitAnswers(this.state.quiz.QUIZ_ID, quizActivity.user_activity, this.state.questions);
+        console.log("callback", callback)
+        if (callback) {
+            console.log("callback", callback)
+        }
     }
 
     submitTest = () => {
@@ -158,43 +165,43 @@ class MCQ extends Component {
 
         // storing answer and converting color to green
         this.state.questions[this.state.index].answer_id = this.state.selected_option
-        console.log('setting green of: ', this.state.index)
+        // console.log('setting green of: ', this.state.index)
         this.state.questions[this.state.index].status = 1
 
     }
 
     render() {
         if (!this.state.questions[this.state.index].status) {
-            console.log("if")
+            // console.log("if")
             this.state.questions[this.state.index].status = 3
         } else {
-            console.log("else")
+            // console.log("else")
         }
 
         var countAttempted = 0
         for (const [index, value] of this.state.questions.entries()) {
-            console.log(value);
+            // console.log(value);
             if (value.status === 1) {
                 countAttempted++
             }
         }
         var countMarkedForReview = 0
         for (const [index, value] of this.state.questions.entries()) {
-            console.log(value);
+            // console.log(value);
             if (value.status === 2) {
                 countMarkedForReview++
             }
         }
         var countUnAttempted = 0
         for (const [index, value] of this.state.questions.entries()) {
-            console.log(value);
+            // console.log(value);
             if (value.status === 3) {
                 countUnAttempted++
             }
         }
         var countUnSeen = 0
         for (const [index, value] of this.state.questions.entries()) {
-            console.log(value);
+            // console.log(value);
             if (!value.status) {
                 countUnSeen++
             }
