@@ -93,6 +93,8 @@ class MCQ extends Component {
 
     setFav(){
         this.setState({ isfav: !this.state.isfav })
+        console.log('setting red of: ', this.state.index)                
+        this.state.questions[this.state.index].status = 2    
     }
 
     chooseOption = async (item) => {
