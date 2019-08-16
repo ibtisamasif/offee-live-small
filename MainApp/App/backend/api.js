@@ -122,8 +122,12 @@ export async function getQuestions(quizId) {
 
 export async function submitAnswers(quizId) {
   let formData = new FormData();
-  formData.append('action', 'GETQUIZDETAILS');
+  formData.append('action', 'SUBMIT_ANSWER');
   formData.append('quiz_id', quizId);
+  formData.append('userId', userId);
+  formData.append('userActivity', userActivity);
+  formData.append('endtime', endtime);
+  formData.append('data', data);
 
   let fetchCallback = await fetch('https://examination.offee.in/admin/Controller.php', {
     method: 'POST',

@@ -20,6 +20,7 @@ class MCQ extends Component {
             timeProgress: 5,
             language: false,
             isfav: false,
+            selected_option: "",
             quiz: {},
             questions: [
                 {
@@ -107,11 +108,7 @@ class MCQ extends Component {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 console.log(this.state.questions[this.state.index].question_options[j])
-
-                // storing answer and converting color to green
-                this.state.questions[this.state.index].answer_id = this.state.questions[this.state.index].question_options[j].id
-                console.log('setting green of: ', this.state.index)
-                this.state.questions[this.state.index].status = 1
+                this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
             }
         }
         this.setState({ loading_click: false })
@@ -140,19 +137,30 @@ class MCQ extends Component {
     //     this.setState({ 
     //         IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions, 
     //         index: (this.state.index + 5) % this.state.questions.length
-    //     //todo navigate to specific question
     //     })
     // }
 
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
-    VerifysubmitTest = () => {
+    
+    VerifysubmitTest() {
         this._toggleModalSubmit()
         this.props.navigation.replace('testResult')
+        //hit Submit api here
+        // callback = await submitAnswers(quiz.QUIZ_ID, "", "", "", "");
+        // if (callback) {
+        // }
     }
+
     submitTest = () => {
         this._toggleModalSubmit()
-        this.props.navigation.replace('testResult')
+        // this.props.navigation.replace('testResult')
+
+        // storing answer and converting color to green
+        this.state.questions[this.state.index].answer_id = this.state.selected_option
+        console.log('setting green of: ', this.state.index)
+        this.state.questions[this.state.index].status = 1
+
     }
 
     render() {
