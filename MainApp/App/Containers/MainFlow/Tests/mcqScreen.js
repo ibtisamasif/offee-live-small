@@ -25,49 +25,46 @@ class MCQ extends Component {
                 {
                     id: 1,
                     question_text: 'what is your name',
-                    status: 1,
                     question_options: [
                         { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
                         { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
                         { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
-                    ]
+                    ],
+                    status: 1,
+                    isfav: false,
                 },
                 {
                     id: 2,
                     question_text: 'what is your age',
-                    status: 1,
                     question_options: [
                         { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
                         { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
                         { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
-                    ]
+                    ],
+                    status: 2,
+                    isfav: true,
                 },
                 {
                     id: 3,
                     question_text: 'what is your gender',
-                    status: 2,
                     question_options: [
                         { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
                         { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
                         { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
-                    ]
+                    ],
+                    status: 3,
+                    isfav: false,
+                },
+                {
+                    id: 4,
+                    question_text: '',
+                    question_options: ""
                 }
             ],
             index: 0
-            // oneQuestion: {
-            //     id: 1,
-            //     question_text: 'what is your age',
-            //     status: 1,
-            //     question_options: [
-            //         { id: 1, option_text: 'Ernest Rutherford1', correct: false, isClicked: false },
-            //         { id: 2, option_text: 'marie Curie1', correct: false, isClicked: false },
-            //         { id: 3, option_text: 'John Dalton1', correct: false, isClicked: false },
-            //         { id: 4, option_text: 'Dmitri Mendeleev1', correct: true, isClicked: false },
-            //     ]
-            // }
         };
     }
     componentDidMount() {
@@ -82,12 +79,8 @@ class MCQ extends Component {
             this.setState({
                 quiz: callback,
                 questions: callback.questions
-                // oneQuestion: questions[0]
-                //todo
             })
             console.log('api whole data', callback)
-            console.log('api whole data1', callback.questions)
-            // console.log('api oneQuestion', oneQuestion)
         }
         this.addIdToQuestionsArray()
     }
@@ -95,8 +88,11 @@ class MCQ extends Component {
     addIdToQuestionsArray(){
         for (let i = 0; i < this.state.questions.length; i++) {
             this.state.questions[i].id = i
-            // console.log(this.state.questions[i])
         }
+    }
+
+    setFav(){
+        this.setState({ isfav: !this.state.isfav })
     }
 
     chooseOption = async (item) => {
@@ -109,6 +105,11 @@ class MCQ extends Component {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 console.log(this.state.questions[this.state.index].question_options[j])
+
+                // storing answer and converting color to green
+                this.state.questions[this.state.index].answer_id = this.state.questions[this.state.index].question_options[j].id
+                console.log('setting green of: ', this.state.index)                
+                this.state.questions[this.state.index].status = 1    
             }
         }
         this.setState({ loading_click: false })
@@ -118,18 +119,20 @@ class MCQ extends Component {
     goToNext = () => {
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
 
+        if(this.state.questions[this.state.index].status === 1){
+            //do nothing
+            console.log('1')
+        }else if(this.state.questions[this.state.index].status === 2){
+            //do nothing
+            console.log('2')
+        }else if (this.state.questions[this.state.index].status === 3){
+            //do nothing
+            console.log('3')
+        }else {
+            console.log('none')
+            this.state.questions[this.state.index].status = 3
+        }
     }
-
-    // moveNext = () => {
-
-    //     let i = questions.indexOf(this.state.oneQuestion)
-
-    //     if (i >= 0 && i < questions.length) {
-    //         this.setState({
-    //             oneQuestion: questions[i + 1]
-    //         })
-    //     }
-    // }
 
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
@@ -143,6 +146,12 @@ class MCQ extends Component {
     }
 
     render() {
+        if(!this.state.questions[this.state.index].status){
+            console.log("if")
+            this.state.questions[this.state.index].status = 3
+        }else{
+            console.log("else")
+        }
         return (
             <View style={styles.MainContainer}>
                 <View style={styles.header}>
@@ -216,7 +225,7 @@ class MCQ extends Component {
                             </View>
 
                             <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setState({ isfav: !this.state.isfav })} />
+                                <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setFav()} />
                             </View>
                         </View>
 
@@ -340,7 +349,7 @@ class MCQ extends Component {
                                         renderItem={({ item }) => (
                                             <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
                                                 <TouchableOpacity onPress={this._toggleModalQuestions} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
-                                                    <Text>
+                                                    <Text style={{ height: totalSize(2), width: totalSize(2), backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
                                                     {   
                                                         item.id
                                                     }
