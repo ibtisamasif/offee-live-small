@@ -109,6 +109,15 @@ class MCQ extends Component {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 // console.log(this.state.questions[this.state.index].question_options[j])
                 this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
+                
+                //mark as attempted / unattempted
+                if (!this.state.selected_option) {
+                    this.state.questions[this.state.index].status = 3
+                } else {
+                    //todo if none of the options were selected (case needs to be handled)
+                    this.state.questions[this.state.index].question_answer = this.state.selected_option
+                    this.state.questions[this.state.index].status = 1
+                }
             }
         }
         this.setState({ loading_click: false })
@@ -143,7 +152,7 @@ class MCQ extends Component {
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
 
-    async VerifysubmitTest() {
+    async verifysubmitTest() {
         this._toggleModalSubmit()
 
         let quizActivity = this.props.navigation.getParam("quizActivity");
@@ -159,16 +168,16 @@ class MCQ extends Component {
         }
     }
 
-    submitTest = () => {
-        this._toggleModalSubmit()
-        if (!this.state.selected_option) {
-            this.state.questions[this.state.index].status = 3
-        } else {
-            //todo if none of the options were selected (case needs to be handeled)
-            this.state.questions[this.state.index].question_answer = this.state.selected_option
-            this.state.questions[this.state.index].status = 1
-        }
-    }
+    // submitTest = () => {
+    //     this._toggleModalSubmit()
+    //     if (!this.state.selected_option) {
+    //         this.state.questions[this.state.index].status = 3
+    //     } else {
+    //         //todo if none of the options were selected (case needs to be handeled)
+    //         this.state.questions[this.state.index].question_answer = this.state.selected_option
+    //         this.state.questions[this.state.index].status = 1
+    //     }
+    // }
 
     render() {
         var countAttempted = 0
@@ -428,7 +437,7 @@ class MCQ extends Component {
                                     </View>
                                 </View>
                                 <View style={{ flex: .2, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                    <TouchableOpacity onPress={() => this.VerifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: 'gray', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
+                                    <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: 'gray', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
                                         <Text style={[styles.h3, { color: 'white' }]}>Submit Test</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -491,7 +500,7 @@ class MCQ extends Component {
                                         <Text style={styles.h3}>Are you sure you want to Submit the test?</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', width: width(80), marginTop: totalSize(1) }}>
-                                        <TouchableOpacity onPress={() => this.submitTest()} style={{ height: height(6), width: width(20), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2.5 }}>
+                                        <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(6), width: width(20), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2.5 }}>
                                             <Text style={[styles.h3, { color: 'white' }]}>Yes</Text>
                                         </TouchableOpacity>
                                         <View style={{ width: width(5) }}></View>
