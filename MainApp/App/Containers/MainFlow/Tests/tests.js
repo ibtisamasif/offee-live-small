@@ -147,12 +147,12 @@ export class TestsList extends Component {
         super(props);
         this.state = {
             tests: [
-                { id: 1, test: 'IBPS Clerk-Full Mock Test', expiry: '02:30PM 31Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-                { id: 2, test: 'IBPS Clerk-Full Mock Test', expiry: '09:30AM 22Jun,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-                { id: 3, test: 'IBPS Clerk-Full Mock Test', expiry: '04:30PM 05Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-                { id: 4, test: 'IBPS Clerk-Full Mock Test', expiry: '11:30AM 21Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-                { id: 5, test: 'IBPS Clerk-Full Mock Test', expiry: '12:30PM 17Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
-                { id: 6, test: 'IBPS Clerk-Full Mock Test', expiry: '02:30PM 25Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', duration: '60' },
+                { id: 1, test: 'IBPS Clerk-Full Mock Test', expiry: '02:30PM 31Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
+                { id: 2, test: 'IBPS Clerk-Full Mock Test', expiry: '09:30AM 22Jun,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
+                { id: 3, test: 'IBPS Clerk-Full Mock Test', expiry: '04:30PM 05Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
+                { id: 4, test: 'IBPS Clerk-Full Mock Test', expiry: '11:30AM 21Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
+                { id: 5, test: 'IBPS Clerk-Full Mock Test', expiry: '12:30PM 17Aug,2020', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
+                { id: 6, test: 'IBPS Clerk-Full Mock Test', expiry: '02:30PM 25Aug,2019', tag: 'IBPS Clerk', questions: '100', Score: '100', quiz_duration: '60' },
             ]
         };
     }
@@ -222,7 +222,7 @@ export class TestsList extends Component {
                                                             <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
                                                         </View>
                                                         <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{item.quiz_duration}</Text>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{((item.quiz_duration)/60)*1}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>
