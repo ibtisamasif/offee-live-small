@@ -142,7 +142,7 @@ class MCQ extends Component {
 
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
-    
+
     async VerifysubmitTest() {
         this._toggleModalSubmit()
 
@@ -161,23 +161,15 @@ class MCQ extends Component {
 
     submitTest = () => {
         this._toggleModalSubmit()
-        // this.props.navigation.replace('testResult')
-
-        // storing answer and converting color to green
-        this.state.questions[this.state.index].answer_id = this.state.selected_option
-        // console.log('setting green of: ', this.state.index)
-        this.state.questions[this.state.index].status = 1
-
+        if (!this.state.selected_option) {
+            this.state.questions[this.state.index].status = 3
+        } else {
+            this.state.questions[this.state.index].answer_id = this.state.selected_option
+            this.state.questions[this.state.index].status = 1
+        }
     }
 
     render() {
-        if (!this.state.questions[this.state.index].status) {
-            // console.log("if")
-            this.state.questions[this.state.index].status = 3
-        } else {
-            // console.log("else")
-        }
-
         var countAttempted = 0
         for (const [index, value] of this.state.questions.entries()) {
             // console.log(value);
