@@ -147,15 +147,15 @@ class MCQ extends Component {
         this._toggleModalSubmit()
 
         let quizActivity = this.props.navigation.getParam("quizActivity");
-        console.log("quizActivity: ", quizActivity.user_activity)
-        console.log("QuestionsArray: ", this.state.questions)
+        // console.log("quizActivity: ", quizActivity.user_activity)
+        // console.log("QuestionsArray: ", this.state.questions)
 
-        // this.props.navigation.replace('testResult')
-        //hit Submit api here
-        let callback = await submitAnswers(this.state.quiz.QUIZ_ID, quizActivity.user_activity, this.state.questions);
+        let callback = await submitAnswers(this.state.quiz.id, quizActivity.user_activity, this.state.questions);
         console.log("callback", callback)
         if (callback) {
-            console.log("callback", callback)
+            if (callback.status = "0") {
+                this.props.navigation.replace('testResult')
+            }
         }
     }
 
@@ -164,7 +164,8 @@ class MCQ extends Component {
         if (!this.state.selected_option) {
             this.state.questions[this.state.index].status = 3
         } else {
-            this.state.questions[this.state.index].answer_id = this.state.selected_option
+            //todo if none of the options were selected (case needs to be handeled)
+            this.state.questions[this.state.index].question_answer = this.state.selected_option
             this.state.questions[this.state.index].status = 1
         }
     }

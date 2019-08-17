@@ -205,16 +205,17 @@ export async function submitAnswers(quizId, userActivity, data) {
     let user = await Storage.getItem('user')
 
     let formData = new FormData();
-    formData.append('action', 'SUBMIT_ANSWER');
     formData.append('quiz_id', quizId);
     formData.append('user_id', user.name);
     formData.append('useractivity', userActivity);
     formData.append('end_time', currentTime);
     formData.append('data', data);
 
+    console.log("formData: ", formData)
+
     await axios({
       method: "post",
-      url: "https://examination.offee.in/admin/Controller.php",
+      url: "https://examination.offee.in/admin/submit_answers_controller.php",
       data: formData,
       config: { headers: { "Content-Type": "application/json" } }
     })
@@ -248,39 +249,6 @@ export async function submitAnswers(quizId, userActivity, data) {
   }
   return parsed_response;
 }
-
-
-
-// export async function login(username, password) {
-//   fetch('https://examination.offee.in/admin/Controller.php', {
-//   method: 'POST',
-//   headers: {
-//      Accept: 'application/json',
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({
-//       "action":"AUTHENTICATE",
-//       "user":username,
-//       "password" : password
-//   }),
-// }).then((response) => response.json())
-//     .then((responseJson) => {
-//       console.log('Response', responseJson);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
-
-
-// function stringToJson(str) {
-//   try {
-//       JSON.parse(str);
-//   } catch (e) {
-//       return false;
-//   }
-//   return true;
-// }
 
 function isString(value) {
   return typeof value === 'string' || value instanceof String;
