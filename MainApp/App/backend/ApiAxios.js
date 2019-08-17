@@ -54,14 +54,13 @@ export async function login(username, password) {
 export async function subjectList(category, user) {
   let parsed_response = null;
   try {
-    let formData = new FormData();
-    formData.append("cat", category);
-    formData.append("user", user);
-
     await axios({
-      method: "post",
+      method: "get",
       url: "https://examination.offee.in/admin/fetch_subjects_controller.php",
-      data: formData,
+      params: {
+        cat: category,
+        user: user
+      },
       config: { headers: { "Content-Type": "application/json" } }
     })
       .then(function (response) {
