@@ -454,29 +454,6 @@ class MCQ extends Component {
                                 <View style={{ flex: .6, backgroundColor: 'transparent' }}>
                                     <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'transparent', borderBottomWidth: 0.5, borderBottomColor: colors.steel }}>
                                         <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
-                                            <Icon name='ios-alarm' type='ionicon' size={totalSize(3.5)} color='gray' />
-                                        </View>
-                                        <View style={{ flex: 5, alignItems: 'flex-start', justifyContent: 'center' }}>
-                                            <Text style={[styles.h4, {}]} >Time Left</Text>
-                                        </View>
-                                        <View >
-                                            {/* <Text style={[styles.h3, { color: colors.Offeeblue }]}>01:05:54</Text> */}
-                                            <CountDown
-                                                size={totalSize(1.5)}
-                                                until={parseInt(this.state.quiz.quiz_duration, 10)}
-                                                onFinish={() => alert('Finished')}
-                                                digitStyle={{ backgroundColor: 'transparent' }}
-                                                digitTxtStyle={{ color: 'black' }}
-                                                timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
-                                                separatorStyle={{ color: 'black' }}
-                                                timeToShow={['H', 'M', 'S']}
-                                                timeLabels={{ m: null, s: null }}
-                                                showSeparator
-                                            />
-                                        </View>
-                                    </View>
-                                    <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'transparent', borderBottomWidth: 0.5, borderBottomColor: colors.steel }}>
-                                        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                                             <Icon name='ios-checkmark-circle' type='ionicon' size={totalSize(3.5)} color='gray' />
                                         </View>
                                         <View style={{ flex: 6, alignItems: 'flex-start', justifyContent: 'center' }}>
