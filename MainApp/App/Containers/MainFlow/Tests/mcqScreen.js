@@ -142,12 +142,12 @@ class MCQ extends Component {
         // }
     }
 
-    // moveToSpecificQuestion = (item) => {
-    //     this.setState({ 
-    //         IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions, 
-    //         index: (this.state.index + 5) % this.state.questions.length
-    //     })
-    // }
+    moveToSpecificQuestion = (index) => {
+        this.setState({ 
+            IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions, 
+            index: (index) % this.state.questions.length
+        })
+    }
 
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
@@ -262,7 +262,7 @@ class MCQ extends Component {
                             <View style={{ width: width(90), flexDirection: 'row', marginVertical: totalSize(1) }}>
                                 <View style={{ flex: 2, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ backgroundColor: 'gray', width: totalSize(3), height: totalSize(3), borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q{(this.state.questions[this.state.index].id) + 1}</Text>
+                                        <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q{this.state.questions[this.state.index].id}</Text>
                                     </View>
                                     {/* <CountDown
                                     size={totalSize(1.5)}
@@ -422,7 +422,7 @@ class MCQ extends Component {
                                             items={this.state.questions}
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                    <TouchableOpacity onPress={this._toggleModalQuestions} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
+                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id)} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
                                                         <Text style={{ height: totalSize(2), width: totalSize(2), backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
                                                             {
                                                                 item.id
