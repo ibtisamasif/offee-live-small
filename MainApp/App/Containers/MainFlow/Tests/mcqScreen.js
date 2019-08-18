@@ -127,19 +127,19 @@ class MCQ extends Component {
     goToNext = () => {
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
 
-        if (this.state.questions[this.state.index].status === 1) {
-            //do nothing
-            // console.log('1')
-        } else if (this.state.questions[this.state.index].status === 2) {
-            //do nothing
-            // console.log('2')
-        } else if (this.state.questions[this.state.index].status === 3) {
-            //do nothing
-            // console.log('3')
-        } else {
-            // console.log('none')
-            this.state.questions[this.state.index].status = 3
-        }
+        // if (this.state.questions[this.state.index].status === 1) {
+        //     //do nothing
+        //     // console.log('1')
+        // } else if (this.state.questions[this.state.index].status === 2) {
+        //     //do nothing
+        //     // console.log('2')
+        // } else if (this.state.questions[this.state.index].status === 3) {
+        //     //do nothing
+        //     // console.log('3')
+        // } else {
+        //     // console.log('none')
+        //     this.state.questions[this.state.index].status = 3
+        // }
     }
 
     // moveToSpecificQuestion = (item) => {
