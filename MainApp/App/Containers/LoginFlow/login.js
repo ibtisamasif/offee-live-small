@@ -136,9 +136,9 @@ class Login extends Component {
                                     })}
                                 />
                             </View> */}
-                            <View style={[styles.InputContainer, { borderColor: 'transparent', justifyContent: 'flex-end', marginVertical: 0 }]}>
+                            {/* <View style={[styles.InputContainer, { borderColor: 'transparent', justifyContent: 'flex-end', marginVertical: 0 }]}>
                                 <Text style={[styles.welcome, { fontSize: totalSize(1.5), color: colors.Offeeblue }]} onPress={() => this._toggleModalForgetPassword()} >Forgot Password?</Text>
-                            </View>
+                            </View> */}
                             <View style={styles.btnContainer}>
                                 <TouchableOpacity style={styles.button} onPress={() => this.onLoginFunc()}>
                                     <View style={styles.btnTxtContainer}>

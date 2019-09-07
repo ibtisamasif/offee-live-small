@@ -88,8 +88,12 @@ class MCQ extends Component {
 
     addIdToQuestionsArray() {
         for (let i = 0; i < this.state.questions.length; i++) {
-            this.state.questions[i].id = i
+            this.state.questions[i].id = i + 1
         }
+    }
+
+    clearSelection() {
+        alert('Coming soon..')
     }
 
     setFav() {
@@ -140,6 +144,10 @@ class MCQ extends Component {
         //     // console.log('none')
         //     this.state.questions[this.state.index].status = 3
         // }
+    }
+
+    goToPrevious = () => {
+        this.setState({ index: (this.state.index - 1) % this.state.questions.length });
     }
 
     moveToSpecificQuestion = (index) => {
@@ -213,9 +221,9 @@ class MCQ extends Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.MainContainer}>
                     <View style={styles.header}>
-                        <View style={styles.headerIconContainer}>
+                        {/* <View style={styles.headerIconContainer}>
                             <Progress.Circle progress={this.state.timeProgress} thickness={0} size={totalSize(5)} unfilledColor='gray' color='white' />
-                        </View>
+                        </View> */}
                         <View style={{ flex: 5.5, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: 'transparent' }}>
                             <View>
                                 <CountDown
@@ -283,7 +291,10 @@ class MCQ extends Component {
                                 </View>
 
                                 <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setFav()} />
+                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(3)} onPress={() => this.setFav()} />
+                                </View>
+                                <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.clearSelection()} />
                                 </View>
                             </View>
 
@@ -299,7 +310,7 @@ class MCQ extends Component {
                         {
                             this.state.questions[this.state.index].question_options.map((item, key) => {
                                 return (
-                                    <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
+                                    <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', backgroundColor: item.isClicked ? colors.transparentBlue : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                         <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
                                             <View style={{ flex: 0.1 }}>
                                                 {/* <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text> */}
@@ -318,9 +329,9 @@ class MCQ extends Component {
                                 <Text style={[styles.h3, { color: 'white' }]}>Next Question</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this._toggleModalSubmit} style={{ width: width(100), backgroundColor: colors.Offeeblue, marginVertical: totalSize(1), alignItems: 'center' }}>
-                            <View style={{ marginVertical: totalSize(2.5) }}>
-                                <Text style={[styles.h3, { color: 'white' }]}>Submit</Text>
+                        <TouchableOpacity onPress={() => this.goToPrevious()} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
+                            <View style={{ marginVertical: totalSize(2) }}>
+                                <Text style={[styles.h3, { color: 'white' }]}>Previous Question</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -416,28 +427,25 @@ class MCQ extends Component {
                                         </View>
                                     </View>
                                     <View style={{ flex: 7, backgroundColor: 'transparent' }}>
-
                                         <FlatGrid
                                             itemDimension={totalSize(5)}
                                             items={this.state.questions}
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id)} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
+                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id -1)} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
                                                         <Text style={{ height: totalSize(2), width: totalSize(2), backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
                                                             {
                                                                 item.id
-                                                                //todo move to specific question
                                                             }
                                                         </Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             )}
                                         />
-
                                     </View>
                                 </View>
                                 <View style={{ flex: .2, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                    <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: 'gray', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
+                                    <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
                                         <Text style={[styles.h3, { color: 'white' }]}>Submit Test</Text>
                                     </TouchableOpacity>
                                 </View>
