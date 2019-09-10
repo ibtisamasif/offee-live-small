@@ -243,7 +243,7 @@ export async function submitAnswers(quizId, userActivity, data) {
   } catch (error) {
     console.log("catchSubmitAnswers", error);
     // console.error(this.props.url, status, error.toString())
-    Alert.alert("Something went wrong");
+    // Alert.alert("Something went wrong");
     throw error;
   }
   return parsed_response;
@@ -255,8 +255,8 @@ function isString(value) {
 
 function cleanStringAndReturnIntoJson(str) {
   try {
-    str = str.replace(/ /g, '');
-    str = str.replace(/\s/g, "");
+    str = str.replace(/ /g, ' ');
+    str = str.replace(/\s/g, " ");
     return JSON.parse(str);
   } catch (e) {
     return;

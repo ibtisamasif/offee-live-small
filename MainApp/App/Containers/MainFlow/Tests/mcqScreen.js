@@ -173,7 +173,8 @@ class MCQ extends Component {
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
 
     async verifysubmitTest() {
-        this._toggleModalSubmit()
+        // this._toggleModalSubmit()
+        this._toggleModalQuestions()
 
         let quizActivity = this.props.navigation.getParam("quizActivity");
         // console.log("quizActivity: ", quizActivity.user_activity)
