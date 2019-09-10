@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import CountDown from 'react-native-countdown-component';
-import * as Progress from 'react-native-progress';
+// import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
 import { getQuestions, submitAnswers } from '../../../backend/ApiAxios'
@@ -20,7 +20,6 @@ class MCQ extends Component {
             IsModalVisibleSubmit: false,
             timeProgress: 5,
             language: false,
-            isfav: false,
             selected_option: "",
             quiz: {},
             questions: [
@@ -34,7 +33,7 @@ class MCQ extends Component {
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 1,
-                    isfav: false,
+                    isMark: false,
                 },
                 {
                     id: 1,
@@ -46,7 +45,7 @@ class MCQ extends Component {
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 2,
-                    isfav: true,
+                    isMark: true,
                 },
                 {
                     id: 2,
@@ -58,7 +57,7 @@ class MCQ extends Component {
                         { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 3,
-                    isfav: false,
+                    isMark: false,
                 },
                 {
                     id: 3,
@@ -95,13 +94,20 @@ class MCQ extends Component {
     }
 
     clearSelection() {
-        alert('Coming soon..')
+        this.state.selected_option = null
+        this.state.questions[this.state.index].status = null
     }
 
-    setFav() {
-        this.setState({ isfav: !this.state.isfav })
+    setMark() {
+        // this.setState({ isfav: !this.state.isfav })
         // console.log('setting red of: ', this.state.index)
-        this.state.questions[this.state.index].status = 2
+        this.state.questions[this.state.index].isMark = !this.state.questions[this.state.index].isMark
+        // if (this.state.questions[this.state.index].isMark) {
+        //     this.state.questions[this.state.index].status = 2
+        // } else {
+        //     // clear
+        //     this.state.questions[this.state.index].status = null
+        // }
     }
 
     chooseOption = async (item) => {
@@ -115,7 +121,7 @@ class MCQ extends Component {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 // console.log(this.state.questions[this.state.index].question_options[j])
                 this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
-                
+
                 //mark as attempted / unattempted
                 if (!this.state.selected_option) {
                     this.state.questions[this.state.index].status = 3
@@ -131,21 +137,20 @@ class MCQ extends Component {
     }
 
     goToNext = () => {
+        if (this.state.questions[this.state.index].status === 1) {
+            //do nothing
+            // console.log('1')
+        } else if (this.state.questions[this.state.index].status === 2) {
+            //do nothing
+            // console.log('2')
+        } else if (this.state.questions[this.state.index].status === 3) {
+            //do nothing
+            // console.log('3')
+        } else {
+            // console.log('none')
+            this.state.questions[this.state.index].status = 3
+        }
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
-
-        // if (this.state.questions[this.state.index].status === 1) {
-        //     //do nothing
-        //     // console.log('1')
-        // } else if (this.state.questions[this.state.index].status === 2) {
-        //     //do nothing
-        //     // console.log('2')
-        // } else if (this.state.questions[this.state.index].status === 3) {
-        //     //do nothing
-        //     // console.log('3')
-        // } else {
-        //     // console.log('none')
-        //     this.state.questions[this.state.index].status = 3
-        // }
     }
 
     goToPrevious = () => {
@@ -153,8 +158,8 @@ class MCQ extends Component {
     }
 
     moveToSpecificQuestion = (index) => {
-        this.setState({ 
-            IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions, 
+        this.setState({
+            IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions,
             index: (index) % this.state.questions.length
         })
     }
@@ -200,7 +205,7 @@ class MCQ extends Component {
         var countMarkedForReview = 0
         for (const [index, value] of this.state.questions.entries()) {
             // console.log(value);
-            if (value.status === 2) {
+            if (value.isMark) {
                 countMarkedForReview++
             }
         }
@@ -293,10 +298,10 @@ class MCQ extends Component {
                                 </View>
 
                                 <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(3)} onPress={() => this.setFav()} />
+                                    <Icon name={this.state.questions[this.state.index].isMark ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setMark()} />
                                 </View>
                                 <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.clearSelection()} />
+                                    <Icon name={'closecircleo'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.clearSelection()} />
                                 </View>
                             </View>
 
@@ -367,7 +372,7 @@ class MCQ extends Component {
                                                 <Text style={[styles.h4, {}]} >Attempted</Text>
                                             </View>
                                             <View style={{ flex: 1.5, alignItems: 'center', justifyContent: 'center' }}>
-                                                <Icon name='ios-star' type='ionicon' size={totalSize(3)} color={colors.Offeeblue} />
+                                                <Icon name='ios-star' type='ionicon' size={totalSize(3)} color={colors.redColor} />
                                             </View>
                                             <View style={{ flex: 3.5, alignItems: 'flex-start', justifyContent: 'center' }}>
                                                 <Text style={[styles.h4, {}]} >Marked for Review</Text>
@@ -401,7 +406,7 @@ class MCQ extends Component {
                                                 </Text>
                                             </View>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 5 }}>
-                                                <Icon name='ios-star' type='ionicon' size={totalSize(2)} color={colors.Offeeblue} />
+                                                <Icon name='ios-star' type='ionicon' size={totalSize(2)} color={colors.redColor} />
                                                 <Text style={styles.h4}>
                                                     {
                                                         countMarkedForReview
@@ -434,8 +439,8 @@ class MCQ extends Component {
                                             items={this.state.questions}
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id -1)} style={{ height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
-                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3),fontSize: normalize(12) , alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
+                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
+                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
                                                             {
                                                                 item.id
                                                             }
@@ -580,5 +585,17 @@ const styles = StyleSheet.create({
         elevation: 2,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    getCircleStyle(item) {
+        console.log('item', item)
+        if (item.isMark) {
+            return {
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: colors.redColor
+            }
+        } else {
+            return {
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: item.status === 1 ? colors.Quizblue : item.status === 3 ? colors.silver : colors.silver,
+            }
+        }
     }
 })
