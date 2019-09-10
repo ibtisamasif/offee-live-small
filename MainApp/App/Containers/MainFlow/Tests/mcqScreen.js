@@ -99,15 +99,9 @@ class MCQ extends Component {
     }
 
     setMark() {
-        // this.setState({ isfav: !this.state.isfav })
-        // console.log('setting red of: ', this.state.index)
-        this.state.questions[this.state.index].isMark = !this.state.questions[this.state.index].isMark
-        // if (this.state.questions[this.state.index].isMark) {
-        //     this.state.questions[this.state.index].status = 2
-        // } else {
-        //     // clear
-        //     this.state.questions[this.state.index].status = null
-        // }
+        var quesions = { ...this.state.questions }
+        quesions[this.state.index].isMark = !this.state.questions[this.state.index].isMark;
+        this.setState({ quesions })
     }
 
     chooseOption = async (item) => {
