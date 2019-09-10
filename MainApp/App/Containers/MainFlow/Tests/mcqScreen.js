@@ -446,7 +446,7 @@ class MCQ extends Component {
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
                                                     <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
-                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
+                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center'}}>
                                                             {
                                                                 item.id
                                                             }
