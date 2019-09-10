@@ -26,10 +26,10 @@ class MCQ extends Component {
                     id: 0,
                     question_text: 'what is your name',
                     question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 1,
                     isMark: false,
@@ -38,10 +38,10 @@ class MCQ extends Component {
                     id: 1,
                     question_text: 'what is your age',
                     question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 2,
                     isMark: true,
@@ -50,10 +50,10 @@ class MCQ extends Component {
                     id: 2,
                     question_text: 'what is your gender',
                     question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 3,
                     isMark: false,
@@ -89,7 +89,13 @@ class MCQ extends Component {
     addIdToQuestionsArray() {
         for (let i = 0; i < this.state.questions.length; i++) {
             this.state.questions[i].id = i + 1
+            for (let j = 0; j < this.state.questions[i].question_options.length; j++) {
+                this.state.questions[i].question_options[j].option_number = j + 1
+            }
         }
+        this.setState({
+            questions: this.state.questions
+        })
     }
 
     clearSelection() {
@@ -319,7 +325,7 @@ class MCQ extends Component {
                                     <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', backgroundColor: item.isClicked ? colors.transparentBlue : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                         <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
                                             <View style={{ flex: 0.1 }}>
-                                                {/* <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text> */}
+                                                <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.option_number}.</Text>
                                             </View>
                                             <View style={{ flex: 0.9 }}>
                                                 <Text style={[styles.h3, { fontWeight: 'normal' }]}>{item.option_text}</Text>
