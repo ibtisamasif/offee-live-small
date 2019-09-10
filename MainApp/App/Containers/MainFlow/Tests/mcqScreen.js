@@ -8,6 +8,7 @@ import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
 import { getQuestions, submitAnswers } from '../../../backend/ApiAxios'
+import { normalize } from '../../../helper/normalizeFont'
 
 _this = null
 class MCQ extends Component {
@@ -68,6 +69,7 @@ class MCQ extends Component {
             index: 0
         };
     }
+
     componentDidMount() {
         _this = this
         this.getCurrentItem();
@@ -432,8 +434,8 @@ class MCQ extends Component {
                                             items={this.state.questions}
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id -1)} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
-                                                        <Text style={{ height: totalSize(2), width: totalSize(2), backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
+                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id -1)} style={{ height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
+                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3),fontSize: normalize(12) , alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
                                                             {
                                                                 item.id
                                                             }

@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import { quizActivity } from '../../../backend/ApiAxios'
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class TestInstructions extends Component {
     constructor(props) {
@@ -35,7 +36,13 @@ class TestInstructions extends Component {
     async quizActivity() {
         quizAct = await quizActivity(this.state.data);
         console.log('callbackQuizActivity: ', quizAct);
-        this.props.navigation.navigate('mcqScreen', { item: this.state.data, quizActivity: quizAct })
+        const resetAction = StackActions.reset({
+            index: 0, // <-- currect active route from actions array
+            actions: [
+                NavigationActions.navigate({ routeName: 'mcqScreen', params: { item: this.state.data, quizActivity: quizAct } }),
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
     }
 
     render() {
