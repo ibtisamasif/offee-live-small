@@ -20,7 +20,6 @@ class MCQ extends Component {
             IsModalVisibleSubmit: false,
             timeProgress: 5,
             language: false,
-            selected_option: "",
             quiz: {},
             questions: [
                 {
@@ -101,7 +100,7 @@ class MCQ extends Component {
         var quesions = { ...this.state.questions }
         quesions[this.state.index].status = null
         quesions[this.state.index].selected_option = null
-        this.setState({ quesions, selected_option:null })
+        this.setState({ quesions })
     }
 
     setMark() {
@@ -120,14 +119,14 @@ class MCQ extends Component {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 // console.log(this.state.questions[this.state.index].question_options[j])
-                this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
+                var selected_option = this.state.questions[this.state.index].question_options[j].id
 
                 //mark as attempted / unattempted
-                if (!this.state.selected_option) {
+                if (!selected_option) {
                     this.state.questions[this.state.index].status = 3
                 } else {
                     //todo if none of the options were selected (case needs to be handled)
-                    this.state.questions[this.state.index].question_answer = this.state.selected_option
+                    this.state.questions[this.state.index].question_answer = selected_option
                     this.state.questions[this.state.index].status = 1
                 }
             }
