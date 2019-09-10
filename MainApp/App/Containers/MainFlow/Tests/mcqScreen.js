@@ -94,8 +94,14 @@ class MCQ extends Component {
     }
 
     clearSelection() {
-        this.state.selected_option = null
-        this.state.questions[this.state.index].status = null
+        for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
+            this.state.questions[this.state.index].question_options[i].isClicked = false
+        }
+
+        var quesions = { ...this.state.questions }
+        quesions[this.state.index].status = null
+        quesions[this.state.index].selected_option = null
+        this.setState({ quesions, selected_option:null })
     }
 
     setMark() {
