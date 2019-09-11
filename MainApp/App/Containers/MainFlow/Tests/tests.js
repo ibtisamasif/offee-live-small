@@ -6,6 +6,7 @@ import colors from '../../../Themes/Colors';
 import Modal from 'react-native-modal'
 import { subjectList } from '../../../backend/ApiAxios'
 import Storage from '../../../helper/asyncStorage'
+import RNLockTask from 'react-native-lock-task';
 
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -26,6 +27,7 @@ export default class Tests extends Component {
         this.props.navigation.navigate('Auth')
         Storage.removeItem('user');
         Storage.clear();
+        RNLockTask.stopLockTask();
     }
     render() {
         return (

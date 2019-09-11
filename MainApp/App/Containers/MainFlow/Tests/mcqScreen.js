@@ -4,10 +4,11 @@ import { Icon } from 'react-native-elements'
 import { height, width, totalSize } from 'react-native-dimension'
 import colors from '../../../Themes/Colors';
 import CountDown from 'react-native-countdown-component';
-import * as Progress from 'react-native-progress';
+// import * as Progress from 'react-native-progress';
 import Modal from 'react-native-modal'
 import { FlatGrid } from 'react-native-super-grid';
 import { getQuestions, submitAnswers } from '../../../backend/ApiAxios'
+import { normalize } from '../../../helper/normalizeFont'
 
 _this = null
 class MCQ extends Component {
@@ -19,48 +20,46 @@ class MCQ extends Component {
             IsModalVisibleSubmit: false,
             timeProgress: 5,
             language: false,
-            isfav: false,
-            selected_option: "",
             quiz: {},
             questions: [
                 {
-                    id: 0,
+                    id: 1,
                     question_text: 'what is your name',
                     question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
                     status: 1,
-                    isfav: false,
-                },
-                {
-                    id: 1,
-                    question_text: 'what is your age',
-                    question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
-                    ],
-                    status: 2,
-                    isfav: true,
+                    isMark: false,
                 },
                 {
                     id: 2,
-                    question_text: 'what is your gender',
+                    question_text: 'what is your age',
                     question_options: [
-                        { id: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
-                        { id: 2, option_text: 'marie Curie', correct: false, isClicked: false },
-                        { id: 3, option_text: 'John Dalton', correct: false, isClicked: false },
-                        { id: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
                     ],
-                    status: 3,
-                    isfav: false,
+                    status: 2,
+                    isMark: true,
                 },
                 {
                     id: 3,
+                    question_text: 'what is your gender',
+                    question_options: [
+                        { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
+                        { id: 2, option_number: 2, option_text: 'marie Curie', correct: false, isClicked: false },
+                        { id: 3, option_number: 3, option_text: 'John Dalton', correct: false, isClicked: false },
+                        { id: 4, option_number: 4, option_text: 'Dmitri Mendeleev', correct: true, isClicked: false },
+                    ],
+                    status: 3,
+                    isMark: false,
+                },
+                {
+                    id: 4,
                     question_text: '',
                     question_options: ""
                 }
@@ -68,6 +67,7 @@ class MCQ extends Component {
             index: 0
         };
     }
+
     componentDidMount() {
         _this = this
         this.getCurrentItem();
@@ -88,63 +88,85 @@ class MCQ extends Component {
 
     addIdToQuestionsArray() {
         for (let i = 0; i < this.state.questions.length; i++) {
-            this.state.questions[i].id = i
+            this.state.questions[i].id = i + 1
+            for (let j = 0; j < this.state.questions[i].question_options.length; j++) {
+                this.state.questions[i].question_options[j].option_number = j + 1
+            }
         }
+        this.setState({
+            questions: this.state.questions
+        })
     }
 
-    setFav() {
-        this.setState({ isfav: !this.state.isfav })
-        // console.log('setting red of: ', this.state.index)
-        this.state.questions[this.state.index].status = 2
+    clearSelection() {
+        for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
+            this.state.questions[this.state.index].question_options[i].isClicked = false
+        }
+        var quesions = { ...this.state.questions }
+        quesions[this.state.index].status = null
+        quesions[this.state.index].selected_option = null
+        this.setState({ quesions })
+    }
+
+    setMark() {
+        var quesions = { ...this.state.questions }
+        quesions[this.state.index].isMark = !this.state.questions[this.state.index].isMark;
+        this.setState({ quesions })
     }
 
     chooseOption = async (item) => {
         this.setState({ loading_click: true })
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
             this.state.questions[this.state.index].question_options[i].isClicked = false
-            // console.log(this.state.questions[this.state.index].question_options[i])
         }
         for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
-                // console.log(this.state.questions[this.state.index].question_options[j])
-                this.state.selected_option = this.state.questions[this.state.index].question_options[j].id
-                
+                var selected_option = this.state.questions[this.state.index].question_options[j].id
+
                 //mark as attempted / unattempted
-                if (!this.state.selected_option) {
+                if (!selected_option) {
                     this.state.questions[this.state.index].status = 3
                 } else {
-                    //todo if none of the options were selected (case needs to be handled)
-                    this.state.questions[this.state.index].question_answer = this.state.selected_option
+                    this.state.questions[this.state.index].question_answer = selected_option
                     this.state.questions[this.state.index].status = 1
                 }
             }
         }
         this.setState({ loading_click: false })
-        // console.warn('options===>', this.state.questions[this.state.index].question_options)
     }
 
     goToNext = () => {
+        if (this.state.questions[this.state.index].status === 1) {
+            // ATTEMPTED
+        } else if (this.state.questions[this.state.index].status === 2) {
+            // useless status now
+        } else if (this.state.questions[this.state.index].status === 3) {
+            // useless status now
+        } else {
+            // SEEN
+            this.state.questions[this.state.index].status = 3
+        }
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
+    }
 
-        // if (this.state.questions[this.state.index].status === 1) {
-        //     //do nothing
-        //     // console.log('1')
-        // } else if (this.state.questions[this.state.index].status === 2) {
-        //     //do nothing
-        //     // console.log('2')
-        // } else if (this.state.questions[this.state.index].status === 3) {
-        //     //do nothing
-        //     // console.log('3')
-        // } else {
-        //     // console.log('none')
-        //     this.state.questions[this.state.index].status = 3
-        // }
+    goToPrevious = () => {
+        this.setState({ index: (this.state.index - 1) % this.state.questions.length });
     }
 
     moveToSpecificQuestion = (index) => {
-        this.setState({ 
-            IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions, 
+        if (this.state.questions[index].status === 1) {
+            // ATTEMPTED
+        } else if (this.state.questions[index].status === 2) {
+            // useless status now
+        } else if (this.state.questions[index].status === 3) {
+            // useless status now
+        } else {
+            // SEEN
+            this.state.questions[index].status = 3
+        }
+        this.setState({
+            IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions,
             index: (index) % this.state.questions.length
         })
     }
@@ -153,7 +175,8 @@ class MCQ extends Component {
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
 
     async verifysubmitTest() {
-        this._toggleModalSubmit()
+        // this._toggleModalSubmit()
+        this._toggleModalQuestions()
 
         let quizActivity = this.props.navigation.getParam("quizActivity");
         // console.log("quizActivity: ", quizActivity.user_activity)
@@ -168,54 +191,37 @@ class MCQ extends Component {
         }
     }
 
-    // submitTest = () => {
-    //     this._toggleModalSubmit()
-    //     if (!this.state.selected_option) {
-    //         this.state.questions[this.state.index].status = 3
-    //     } else {
-    //         //todo if none of the options were selected (case needs to be handeled)
-    //         this.state.questions[this.state.index].question_answer = this.state.selected_option
-    //         this.state.questions[this.state.index].status = 1
-    //     }
-    // }
-
     render() {
         var countAttempted = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
             if (value.status === 1) {
                 countAttempted++
             }
         }
         var countMarkedForReview = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
-            if (value.status === 2) {
+            if (value.isMark) {
                 countMarkedForReview++
             }
         }
         var countUnAttempted = 0
-        for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
-            if (value.status === 3) {
-                countUnAttempted++
-            }
-        }
+        countUnAttempted = this.state.questions.length - countAttempted
+
         var countUnSeen = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
             if (!value.status) {
                 countUnSeen++
             }
         }
+        countUnSeen = countUnSeen - 1
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.MainContainer}>
                     <View style={styles.header}>
-                        <View style={styles.headerIconContainer}>
+                        {/* <View style={styles.headerIconContainer}>
                             <Progress.Circle progress={this.state.timeProgress} thickness={0} size={totalSize(5)} unfilledColor='gray' color='white' />
-                        </View>
+                        </View> */}
                         <View style={{ flex: 5.5, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: 'transparent' }}>
                             <View>
                                 <CountDown
@@ -233,26 +239,6 @@ class MCQ extends Component {
                                 <Text style={{ fontSize: totalSize(1.5), color: colors.cloud, left: 8 }}>{this.state.quiz.quiz_name}</Text>
                             </View>
                         </View>
-                        {/* <View style={styles.headerIconContainer}>
-                        <TouchableOpacity>
-                            <View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ backgroundColor: 'white', borderRadius: 2.5 }}>
-                                        <Text style={[{ marginHorizontal: totalSize(0.5), fontSize: totalSize(1.5), fontWeight: 'bold', color: 'black' }]}>E</Text>
-                                    </View>
-                                    <Icon name='subdirectory-arrow-left' color='white' size={totalSize(1.5)} type='material' />
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Icon name='subdirectory-arrow-right' color='white' size={totalSize(1.5)} type='material' />
-                                    <View style={{ backgroundColor: 'white', borderRadius: 2.5 }}>
-                                        <View style={{ margin: totalSize(0.25) }}>
-                                            <Icon name='hinduism' color='black' size={totalSize(1.5)} type='material-community' />
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View> */}
                         <TouchableOpacity style={[styles.headerIconContainer, { backgroundColor: 'transparent' }]} onPress={this._toggleModalQuestions}>
                             <Icon name='menufold' type='antdesign' color='white' size={totalSize(3)} />
                         </TouchableOpacity>
@@ -262,20 +248,8 @@ class MCQ extends Component {
                             <View style={{ width: width(90), flexDirection: 'row', marginVertical: totalSize(1) }}>
                                 <View style={{ flex: 2, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ backgroundColor: 'gray', width: totalSize(3), height: totalSize(3), borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q{this.state.questions[this.state.index].id}</Text>
+                                        <Text style={{ fontSize: totalSize(1), color: 'white' }}>Q{this.state.questions[this.state.index].id}</Text>
                                     </View>
-                                    {/* <CountDown
-                                    size={totalSize(1.5)}
-                                    until={parseInt(this.state.quiz.quiz_duration, 10)/this.state.questions.length}
-                                    onFinish={() => alert('Time for this question finished')}
-                                    digitStyle={{ backgroundColor: 'transparent' }}
-                                    digitTxtStyle={{ color: 'gray' }}
-                                    timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
-                                    separatorStyle={{ color: 'gray' }}
-                                    timeToShow={['M', 'S']}
-                                    timeLabels={{ m: null, s: null }}
-                                    showSeparator
-                                /> */}
                                     <View style={{ width: totalSize(0.5), height: totalSize(3), borderRightWidth: 0.5, borderRightColor: 'gray' }}>
                                     </View>
                                     <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text>
@@ -283,7 +257,10 @@ class MCQ extends Component {
                                 </View>
 
                                 <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                    <Icon name={this.state.isfav ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setFav()} />
+                                    <Icon name={this.state.questions[this.state.index].isMark ? 'star' : 'staro'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.setMark()} />
+                                </View>
+                                <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                    <Icon name={'closecircleo'} color='gray' type='antdesign' size={totalSize(2)} onPress={() => this.clearSelection()} />
                                 </View>
                             </View>
 
@@ -299,10 +276,10 @@ class MCQ extends Component {
                         {
                             this.state.questions[this.state.index].question_options.map((item, key) => {
                                 return (
-                                    <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
+                                    <TouchableOpacity key={key} onPress={() => this.chooseOption(item)} style={{ width: width(100), borderWidth: 1, borderColor: item.isClicked ? 'black' : 'white', backgroundColor: item.isClicked ? colors.transparentBlue : 'white', alignItems: 'center', marginTop: totalSize(1) }}>
                                         <View style={{ width: width(90), marginVertical: totalSize(2), flexDirection: 'row' }}>
                                             <View style={{ flex: 0.1 }}>
-                                                {/* <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.id}.</Text> */}
+                                                <Text style={[styles.h3, { fontWeight: 'normal', color: 'gray' }]}>{item.option_number}.</Text>
                                             </View>
                                             <View style={{ flex: 0.9 }}>
                                                 <Text style={[styles.h3, { fontWeight: 'normal' }]}>{item.option_text}</Text>
@@ -318,9 +295,9 @@ class MCQ extends Component {
                                 <Text style={[styles.h3, { color: 'white' }]}>Next Question</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this._toggleModalSubmit} style={{ width: width(100), backgroundColor: colors.Offeeblue, marginVertical: totalSize(1), alignItems: 'center' }}>
-                            <View style={{ marginVertical: totalSize(2.5) }}>
-                                <Text style={[styles.h3, { color: 'white' }]}>Submit</Text>
+                        <TouchableOpacity onPress={() => this.goToPrevious()} style={{ width: width(100), marginVertical: totalSize(1), backgroundColor: colors.Offeeblue, alignItems: 'center' }}>
+                            <View style={{ marginVertical: totalSize(2) }}>
+                                <Text style={[styles.h3, { color: 'white' }]}>Previous Question</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -354,7 +331,7 @@ class MCQ extends Component {
                                                 <Text style={[styles.h4, {}]} >Attempted</Text>
                                             </View>
                                             <View style={{ flex: 1.5, alignItems: 'center', justifyContent: 'center' }}>
-                                                <Icon name='ios-star' type='ionicon' size={totalSize(3)} color={colors.Offeeblue} />
+                                                <Icon name='ios-star' type='ionicon' size={totalSize(3)} color={colors.redColor} />
                                             </View>
                                             <View style={{ flex: 3.5, alignItems: 'flex-start', justifyContent: 'center' }}>
                                                 <Text style={[styles.h4, {}]} >Marked for Review</Text>
@@ -388,7 +365,7 @@ class MCQ extends Component {
                                                 </Text>
                                             </View>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 5 }}>
-                                                <Icon name='ios-star' type='ionicon' size={totalSize(2)} color={colors.Offeeblue} />
+                                                <Icon name='ios-star' type='ionicon' size={totalSize(2)} color={colors.redColor} />
                                                 <Text style={styles.h4}>
                                                     {
                                                         countMarkedForReview
@@ -416,28 +393,25 @@ class MCQ extends Component {
                                         </View>
                                     </View>
                                     <View style={{ flex: 7, backgroundColor: 'transparent' }}>
-
                                         <FlatGrid
                                             itemDimension={totalSize(5)}
                                             items={this.state.questions}
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id)} style={{ height: totalSize(4), width: totalSize(4), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: item.status === 1 ? colors.Quizblue : item.status === 2 ? colors.Offeeblue : item.status === 3 ? 'gray' : colors.silver, borderRadius: 100 }}>
-                                                        <Text style={{ height: totalSize(2), width: totalSize(2), backgroundColor: 'white', borderWidth: 1, borderColor: colors.silver, borderRadius: 100 }}>
+                                                    <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
+                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center' }}>
                                                             {
                                                                 item.id
-                                                                //todo move to specific question
                                                             }
                                                         </Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             )}
                                         />
-
                                     </View>
                                 </View>
                                 <View style={{ flex: .2, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                    <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: 'gray', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
+                                    <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(7.5), width: width(75), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
                                         <Text style={[styles.h3, { color: 'white' }]}>Submit Test</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -570,5 +544,17 @@ const styles = StyleSheet.create({
         elevation: 2,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    getCircleStyle(item) {
+        console.log('item', item)
+        if (item.isMark) {
+            return {
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: colors.redColor, backgroundColor: item.status === 1 ? colors.transparentBlue : colors.transparent
+            }
+        } else {
+            return {
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: item.status === 1 ? colors.Quizblue : item.status === 3 ? colors.silver : colors.silver, backgroundColor: item.status === 1 ? colors.transparentBlue : colors.transparent
+            }
+        }
     }
 })

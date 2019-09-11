@@ -13,6 +13,7 @@ import colors from '../Themes/Colors';
 import { totalSize } from 'react-native-dimension';
 import images from '../Themes/Images';
 import Storage from '../helper/asyncStorage'
+import RNLockTask from 'react-native-lock-task';
 
 export default class Splash extends React.Component {
     constructor(props) {
@@ -27,6 +28,7 @@ export default class Splash extends React.Component {
         // This will switch to the App screen or Auth screen and this loading
         // screen will be unmounted and thrown away.
         setTimeout(() => { this.props.navigation.navigate(userToken ? 'App' : 'Auth') }, 1000);
+        RNLockTask.startLockTask();
     };
 
     // Render any loading content that you like here

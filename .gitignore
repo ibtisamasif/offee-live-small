@@ -57,3 +57,4 @@ buck-out/
 
 # .history library
 .history
+android/.settings/org.eclipse.buildship.core.prefs
