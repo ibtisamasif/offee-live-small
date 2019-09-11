@@ -23,7 +23,7 @@ class MCQ extends Component {
             quiz: {},
             questions: [
                 {
-                    id: 0,
+                    id: 1,
                     question_text: 'what is your name',
                     question_options: [
                         { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
@@ -35,7 +35,7 @@ class MCQ extends Component {
                     isMark: false,
                 },
                 {
-                    id: 1,
+                    id: 2,
                     question_text: 'what is your age',
                     question_options: [
                         { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
@@ -47,7 +47,7 @@ class MCQ extends Component {
                     isMark: true,
                 },
                 {
-                    id: 2,
+                    id: 3,
                     question_text: 'what is your gender',
                     question_options: [
                         { id: 1, option_number: 1, option_text: 'Ernest Rutherford', correct: false, isClicked: false },
@@ -59,7 +59,7 @@ class MCQ extends Component {
                     isMark: false,
                 },
                 {
-                    id: 3,
+                    id: 4,
                     question_text: '',
                     question_options: ""
                 }
@@ -102,7 +102,6 @@ class MCQ extends Component {
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
             this.state.questions[this.state.index].question_options[i].isClicked = false
         }
-
         var quesions = { ...this.state.questions }
         quesions[this.state.index].status = null
         quesions[this.state.index].selected_option = null
@@ -119,40 +118,33 @@ class MCQ extends Component {
         this.setState({ loading_click: true })
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
             this.state.questions[this.state.index].question_options[i].isClicked = false
-            // console.log(this.state.questions[this.state.index].question_options[i])
         }
         for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
             if (item.id == this.state.questions[this.state.index].question_options[j].id) {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
-                // console.log(this.state.questions[this.state.index].question_options[j])
                 var selected_option = this.state.questions[this.state.index].question_options[j].id
 
                 //mark as attempted / unattempted
                 if (!selected_option) {
                     this.state.questions[this.state.index].status = 3
                 } else {
-                    //todo if none of the options were selected (case needs to be handled)
                     this.state.questions[this.state.index].question_answer = selected_option
                     this.state.questions[this.state.index].status = 1
                 }
             }
         }
         this.setState({ loading_click: false })
-        // console.warn('options===>', this.state.questions[this.state.index].question_options)
     }
 
     goToNext = () => {
         if (this.state.questions[this.state.index].status === 1) {
-            //do nothing
-            // console.log('1')
+            // ATTEMPTED
         } else if (this.state.questions[this.state.index].status === 2) {
-            //do nothing
-            // console.log('2')
+            // useless status now
         } else if (this.state.questions[this.state.index].status === 3) {
-            //do nothing
-            // console.log('3')
+            // useless status now
         } else {
-            // console.log('none')
+            // SEEN
             this.state.questions[this.state.index].status = 3
         }
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
@@ -163,6 +155,16 @@ class MCQ extends Component {
     }
 
     moveToSpecificQuestion = (index) => {
+        if (this.state.questions[index].status === 1) {
+            // ATTEMPTED
+        } else if (this.state.questions[index].status === 2) {
+            // useless status now
+        } else if (this.state.questions[index].status === 3) {
+            // useless status now
+        } else {
+            // SEEN
+            this.state.questions[index].status = 3
+        }
         this.setState({
             IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions,
             index: (index) % this.state.questions.length
@@ -189,46 +191,29 @@ class MCQ extends Component {
         }
     }
 
-    // submitTest = () => {
-    //     this._toggleModalSubmit()
-    //     if (!this.state.selected_option) {
-    //         this.state.questions[this.state.index].status = 3
-    //     } else {
-    //         //todo if none of the options were selected (case needs to be handeled)
-    //         this.state.questions[this.state.index].question_answer = this.state.selected_option
-    //         this.state.questions[this.state.index].status = 1
-    //     }
-    // }
-
     render() {
         var countAttempted = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
             if (value.status === 1) {
                 countAttempted++
             }
         }
         var countMarkedForReview = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
             if (value.isMark) {
                 countMarkedForReview++
             }
         }
         var countUnAttempted = 0
-        for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
-            if (value.status === 3) {
-                countUnAttempted++
-            }
-        }
+        countUnAttempted = this.state.questions.length - countAttempted
+
         var countUnSeen = 0
         for (const [index, value] of this.state.questions.entries()) {
-            // console.log(value);
             if (!value.status) {
                 countUnSeen++
             }
         }
+        countUnSeen = countUnSeen - 1
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
@@ -254,26 +239,6 @@ class MCQ extends Component {
                                 <Text style={{ fontSize: totalSize(1.5), color: colors.cloud, left: 8 }}>{this.state.quiz.quiz_name}</Text>
                             </View>
                         </View>
-                        {/* <View style={styles.headerIconContainer}>
-                        <TouchableOpacity>
-                            <View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ backgroundColor: 'white', borderRadius: 2.5 }}>
-                                        <Text style={[{ marginHorizontal: totalSize(0.5), fontSize: totalSize(1.5), fontWeight: 'bold', color: 'black' }]}>E</Text>
-                                    </View>
-                                    <Icon name='subdirectory-arrow-left' color='white' size={totalSize(1.5)} type='material' />
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Icon name='subdirectory-arrow-right' color='white' size={totalSize(1.5)} type='material' />
-                                    <View style={{ backgroundColor: 'white', borderRadius: 2.5 }}>
-                                        <View style={{ margin: totalSize(0.25) }}>
-                                            <Icon name='hinduism' color='black' size={totalSize(1.5)} type='material-community' />
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View> */}
                         <TouchableOpacity style={[styles.headerIconContainer, { backgroundColor: 'transparent' }]} onPress={this._toggleModalQuestions}>
                             <Icon name='menufold' type='antdesign' color='white' size={totalSize(3)} />
                         </TouchableOpacity>
@@ -283,20 +248,8 @@ class MCQ extends Component {
                             <View style={{ width: width(90), flexDirection: 'row', marginVertical: totalSize(1) }}>
                                 <View style={{ flex: 2, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ backgroundColor: 'gray', width: totalSize(3), height: totalSize(3), borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={{ fontSize: totalSize(1.2), color: 'white' }}>Q{this.state.questions[this.state.index].id}</Text>
+                                        <Text style={{ fontSize: totalSize(1), color: 'white' }}>Q{this.state.questions[this.state.index].id}</Text>
                                     </View>
-                                    {/* <CountDown
-                                    size={totalSize(1.5)}
-                                    until={parseInt(this.state.quiz.quiz_duration, 10)/this.state.questions.length}
-                                    onFinish={() => alert('Time for this question finished')}
-                                    digitStyle={{ backgroundColor: 'transparent' }}
-                                    digitTxtStyle={{ color: 'gray' }}
-                                    timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
-                                    separatorStyle={{ color: 'gray' }}
-                                    timeToShow={['M', 'S']}
-                                    timeLabels={{ m: null, s: null }}
-                                    showSeparator
-                                /> */}
                                     <View style={{ width: totalSize(0.5), height: totalSize(3), borderRightWidth: 0.5, borderRightColor: 'gray' }}>
                                     </View>
                                     <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text>
@@ -446,7 +399,7 @@ class MCQ extends Component {
                                             renderItem={({ item }) => (
                                                 <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
                                                     <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
-                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center'}}>
+                                                        <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center' }}>
                                                             {
                                                                 item.id
                                                             }
@@ -596,11 +549,11 @@ const styles = StyleSheet.create({
         console.log('item', item)
         if (item.isMark) {
             return {
-                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: colors.redColor
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: colors.redColor, backgroundColor: item.status === 1 ? colors.transparentBlue : colors.transparent
             }
         } else {
             return {
-                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: item.status === 1 ? colors.Quizblue : item.status === 3 ? colors.silver : colors.silver,
+                height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: item.status === 1 ? colors.Quizblue : item.status === 3 ? colors.silver : colors.silver, backgroundColor: item.status === 1 ? colors.transparentBlue : colors.transparent
             }
         }
     }

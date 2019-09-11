@@ -74,8 +74,11 @@ class Login extends Component {
                                 <Image source={images.icon} style={styles.logo} />
                                 <Text style={{fontSize:totalSize(1.5),color:'gray',fontWeight:'bold'}}>Live</Text>
                             </View>
-                            <View style={[styles.txtContainer, {}]}>
-                                <Text style={[styles.welcome, { fontSize: totalSize(3.5), color: colors.Offeeblue }]}>Login</Text>
+                            <View style={[styles.txtContainer]}>
+                                <Text style={[styles.welcome, { fontSize: totalSize(5), color: colors.redColor }]}>Offee</Text>
+                            </View>
+                            <View style={[styles.txtContainer]}>
+                                <Text style={[styles.welcome, { fontSize: totalSize(3), color: colors.Offeeblue }]}>Login</Text>
                             </View>
                             {/* <View style={[styles.txtContainer, { flexDirection: 'row' }]}>
                                 <Text style={[styles.welcome, { fontSize: totalSize(1.5), fontWeight: 'normal' }]}>DON'T HAVE AN ACCOUNT? </Text>
@@ -266,7 +269,9 @@ const styles = StyleSheet.create({
         //color: 'rgb(219,0,0)'
     },
     logo: {
-        //marginTop: height(2),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: height(2),
         height: totalSize(20),
         width: totalSize(12.5)
     },
