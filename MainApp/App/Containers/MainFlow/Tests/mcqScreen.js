@@ -182,13 +182,13 @@ class MCQ extends Component {
         // console.log("quizActivity: ", quizActivity.user_activity)
         // console.log("QuestionsArray: ", this.state.questions)
 
-        let callback = await submitAnswers(this.state.quiz.id, quizActivity.user_activity, this.state.questions);
+        let callback = submitAnswers(this.state.quiz.id, quizActivity.user_activity, this.state.questions);
         console.log("callback", callback)
-        if (callback) {
-            if (callback.status = "0") {
+        // if (callback) {
+            // if (callback.status = "0") {
                 this.props.navigation.replace('testResult')
-            }
-        }
+            // }
+        // }
     }
 
     render() {
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     getCircleStyle(item) {
-        console.log('item', item)
+        // console.log('item', item)
         if (item.isMark) {
             return {
                 height: totalSize(4.6), width: totalSize(4.6), alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderRadius: 100, borderColor: colors.redColor, backgroundColor: item.status === 1 ? colors.transparentBlue : colors.transparent
