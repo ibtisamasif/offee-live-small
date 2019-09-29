@@ -4,7 +4,7 @@ import { height, width, totalSize } from 'react-native-dimension';
 import { Icon, Overlay, CheckBox } from 'react-native-elements'
 //import store from '../../Stores/orderStore'
 //import api from '../../lib/api'
-import {login} from '../../backend/ApiAxios';
+import { login } from '../../backend/ApiAxios';
 import Storage from '../../helper/asyncStorage'
 import Modal from 'react-native-modal'
 import images from '../../Themes/Images';
@@ -13,16 +13,44 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',//'virk@gmail.com',
-            password: '',//'12345',
+            username: '',
+            password: '',
             loading: false,
             overlayVisible: false,
             checked: true,
             userType: 'user',
             isModalVisibleForgetPassword: false,
-            IsModalVisibleSelectSignUp: false
+            IsModalVisibleSelectSignUp: false,
+            icEye: 'visibility-off',
+            showPassword: true
         };
     }
+
+    changePwdType = () => {
+        let newState;
+        if (this.state.showPassword) {
+            newState = {
+                icEye: 'visibility',
+                showPassword: false,
+                password: this.state.password
+            }
+        } else {
+            newState = {
+                icEye: 'visibility-off',
+                showPassword: true,
+                password: this.state.password
+            }
+        }
+        this.setState(newState)
+    };
+    handlePassword = (password) => {
+        let newState = {
+            icEye: this.state.icEye,
+            showPassword: this.state.showPassword,
+            password: password
+        }
+        this.setState(newState);
+    };
 
     static navigationOptions = {
         header: null
@@ -42,27 +70,27 @@ class Login extends Component {
     // }
 
     async onLoginFunc() {
-      const { username, password} = this.state;
-    if(username == '' || password == ''){
-      alert('Email and password fields cannot be empty')
-    }
-    else{
-      this.setState({loading: true});
-      let callback = await login(username, password);
-      this.setState({loading: false});
-
-      console.log('callback', callback);
-
-      if (callback) {
-        if (callback.status == "5") {
-              Storage.setItem('user', callback)
-              this.props.navigation.navigate('App');
-        }else if (callback.status == "-3" || callback.status == "-2" || callback.status == "-1") {
-            alert(callback.message);
+        const { username, password } = this.state;
+        if (username == '' || password == '') {
+            alert('Email and password fields cannot be empty')
         }
-      }
-  }
-}
+        else {
+            this.setState({ loading: true });
+            let callback = await login(username, password);
+            this.setState({ loading: false });
+
+            console.log('callback', callback);
+
+            if (callback) {
+                if (callback.status == "5") {
+                    Storage.setItem('user', callback)
+                    this.props.navigation.navigate('App');
+                } else if (callback.status == "-3" || callback.status == "-2" || callback.status == "-1") {
+                    alert(callback.message);
+                }
+            }
+        }
+    }
 
     render() {
         return (
@@ -72,7 +100,7 @@ class Login extends Component {
                         <View style={{ flex: 1, width: width(95), alignItems: 'center', backgroundColor: 'transparent', marginTop: height(5) }}>
                             <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                 <Image source={images.icon} style={styles.logo} />
-                                <Text style={{fontSize:totalSize(1.5),color:'gray',fontWeight:'bold'}}>Live</Text>
+                                <Text style={{ fontSize: totalSize(1.5), color: 'gray', fontWeight: 'bold' }}>Live</Text>
                             </View>
                             <View style={[styles.txtContainer]}>
                                 <Text style={[styles.welcome, { fontSize: totalSize(5), color: colors.redColor }]}>Offee</Text>
@@ -99,12 +127,28 @@ class Login extends Component {
                             <View style={styles.InputContainer}>
                                 <Icon name='lock' color='gray' size={totalSize(3)} />
                                 <TextInput
-                                    onChangeText={(value) => this.setState({ password: value })}
                                     placeholder='PASSWORD'
                                     placeholderTextColor='rgb(217,217,217)'
                                     underlineColorAndroid='transparent'
-                                    secureTextEntry={true}
                                     style={styles.TxtInput}
+                                    onChangeText={this.handlePassword}
+                                    label={this.props.label}
+                                    value={this.state.password}
+                                    onChangeText={this.handlePassword}
+                                    secureTextEntry={this.state.showPassword}
+                                    labelActiveColor={componentColors.password_icon_color}
+                                    labelColor={componentColors.password_icon_color}
+                                    placeholderColor={componentColors.password_icon_color}
+                                    underlineColor={componentColors.password_icon_color}
+                                    underlineActiveColor={componentColors.password_icon_color}
+                                    underlineActiveHeight={2}
+                                    underlineHeight={1}
+                                />
+                                <Icon style={styles.icon}
+                                    name={this.state.icEye}
+                                    size={20}
+                                    color={componentColors.password_icon_color}
+                                    onPress={this.changePwdType}
                                 />
                             </View>
                             {/* <View style={[styles.InputContainer, { backgroundColor: 'transparent', elevation: 0, justifyContent: 'flex-start', marginVertical: height(1) }]}>
@@ -370,3 +414,6 @@ const styles = StyleSheet.create({
 
 
 });
+export const componentColors = {
+    password_icon_color: '#9E9E9E',
+};
