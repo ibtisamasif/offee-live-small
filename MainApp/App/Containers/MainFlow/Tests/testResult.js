@@ -16,7 +16,7 @@ class TestResult extends Component {
     static navigationOptions = {
         title: 'Result',
         headerRight: (
-            <TouchableOpacity onPress={() => _this.props.navigation.replace('testResult')} style={{ backgroundColor: colors.SPA_redColor, borderRadius: 5, marginHorizontal: 5 }} >
+            <TouchableOpacity onPress={() => _this.props.navigation.replace('drawer')} style={{ backgroundColor: colors.SPA_redColor, borderRadius: 5, marginHorizontal: 5 }} >
                 <View style={{ flexDirection: 'row', marginVertical: 5, marginHorizontal: 5, alignItems: 'center', justifyContent: 'center' }}>
                     <Icon name='home' color='black' size={totalSize(3.5)} />
                 </View>

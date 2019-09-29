@@ -174,8 +174,12 @@ class MCQ extends Component {
     _toggleModalQuestions = () => this.setState({ IsModalVisibleQuestions: !this.state.IsModalVisibleQuestions })
     _toggleModalSubmit = () => this.setState({ IsModalVisibleSubmit: !this.state.IsModalVisibleSubmit })
 
-    async verifysubmitTest() {
-        // this._toggleModalSubmit()
+    verifysubmitTest = () => {
+        this._toggleModalSubmit()
+    }
+
+    submitTest = () => {
+        this._toggleModalSubmit()
         this._toggleModalQuestions()
 
         let quizActivity = this.props.navigation.getParam("quizActivity");
@@ -185,9 +189,9 @@ class MCQ extends Component {
         let callback = submitAnswers(this.state.quiz.id, quizActivity.user_activity, this.state.questions);
         console.log("callback", callback)
         // if (callback) {
-            // if (callback.status = "0") {
-                this.props.navigation.replace('testResult')
-            // }
+        // if (callback.status = "0") {
+        this.props.navigation.replace('testResult')
+        // }
         // }
     }
 
@@ -300,6 +304,11 @@ class MCQ extends Component {
                                 <Text style={[styles.h3, { color: 'white' }]}>Previous Question</Text>
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={this._toggleModalSubmit} style={{ width: width(100), backgroundColor: colors.Offeeblue, marginVertical: totalSize(1), alignItems: 'center' }}>
+                        <View style={{ marginVertical: totalSize(2.5) }}>
+                            <Text style={[styles.h3, { color: 'white' }]}>Submit</Text>
+                        </View>
+                    </TouchableOpacity>
                     </View>
                     <Modal
                         isVisible={this.state.IsModalVisibleQuestions} // Show all quesions
@@ -474,7 +483,7 @@ class MCQ extends Component {
                                         <Text style={styles.h3}>Are you sure you want to Submit the test?</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', width: width(80), marginTop: totalSize(1) }}>
-                                        <TouchableOpacity onPress={() => this.verifysubmitTest()} style={{ height: height(6), width: width(20), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2.5 }}>
+                                        <TouchableOpacity onPress={() => this.submitTest()} style={{ height: height(6), width: width(20), backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center', borderRadius: 2.5 }}>
                                             <Text style={[styles.h3, { color: 'white' }]}>Yes</Text>
                                         </TouchableOpacity>
                                         <View style={{ width: width(5) }}></View>
