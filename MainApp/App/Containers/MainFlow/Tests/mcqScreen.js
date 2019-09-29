@@ -256,8 +256,8 @@ class MCQ extends Component {
                                     </View>
                                     <View style={{ width: totalSize(0.5), height: totalSize(3), borderRightWidth: 0.5, borderRightColor: 'gray' }}>
                                     </View>
-                                    <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text>
-                                    <Text style={[styles.h3, { color: 'gray' }]}>  -0.3  </Text>
+                                    {/* <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text> */}
+                                    {/* <Text style={[styles.h3, { color: 'gray' }]}>  -0.3  </Text> */}
                                 </View>
 
                                 <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
