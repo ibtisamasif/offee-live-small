@@ -146,7 +146,7 @@ class Login extends Component {
                                 />
                                 <Icon style={styles.icon}
                                     name={this.state.icEye}
-                                    size={20}
+                                    size={totalSize(3)}
                                     color={componentColors.password_icon_color}
                                     onPress={this.changePwdType}
                                 />
