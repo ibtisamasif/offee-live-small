@@ -130,7 +130,7 @@ class Login extends Component {
                                     placeholder='PASSWORD'
                                     placeholderTextColor='rgb(217,217,217)'
                                     underlineColorAndroid='transparent'
-                                    style={styles.TxtInput}
+                                    style={styles.TxtInputPassword}
                                     onChangeText={this.handlePassword}
                                     label={this.props.label}
                                     value={this.state.password}
@@ -321,6 +321,18 @@ const styles = StyleSheet.create({
     },
     TxtInput: {
         width: width(70),
+        height: height(6),
+        //alignItems: 'center',
+        //justifyContent: 'center',
+        //backgroundColor: 'red',
+        fontSize: totalSize(1.5),
+        //color: 'rgb(217,217,217)'
+        //color: 'rgb(180,210,53)',
+        //marginVertical:height(2),
+        //borderRadius: 25,
+    },
+    TxtInputPassword: {
+        width: width(64),
         height: height(6),
         //alignItems: 'center',
         //justifyContent: 'center',
