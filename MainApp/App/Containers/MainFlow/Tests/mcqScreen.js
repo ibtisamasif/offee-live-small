@@ -313,7 +313,7 @@ class MCQ extends Component {
                             width={width(95)}
                             height={height(100)}
                             onBackdropPress={this._toggleModalQuestions}
-                            onBackButtonPress = {() => this.setState({ IsModalVisibleQuestions: false })}
+                            onBackButtonPress = {this._toggleModalQuestions}
                             style={{ alignItems: 'flex-end', justifyContent: 'center' }}
                         >
                             <View style={{ backgroundColor: 'white', height: height(100), width: width(80) }}>
