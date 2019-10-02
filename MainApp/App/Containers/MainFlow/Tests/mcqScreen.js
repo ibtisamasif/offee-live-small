@@ -115,6 +115,7 @@ class MCQ extends Component {
     }
 
     chooseOption = async (item) => {
+        // if (this.state.questions[this.state.index].status && !this.state.questions[this.state.index].status === 3) {
         this.setState({ loading_click: true })
         for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
             this.state.questions[this.state.index].question_options[i].isClicked = false
@@ -124,27 +125,23 @@ class MCQ extends Component {
                 this.state.questions[this.state.index].question_options[j].isClicked = true
                 var selected_option = this.state.questions[this.state.index].question_options[j].id
 
-                //mark as attempted / unattempted
                 if (!selected_option) {
+                    //mark as seen
                     this.state.questions[this.state.index].status = 3
                 } else {
+                    //mark as attempted
                     this.state.questions[this.state.index].question_answer = selected_option
                     this.state.questions[this.state.index].status = 1
                 }
             }
         }
         this.setState({ loading_click: false })
+        // }
     }
 
     goToNext = () => {
-        if (this.state.questions[this.state.index].status === 1) {
-            // ATTEMPTED
-        } else if (this.state.questions[this.state.index].status === 2) {
-            // useless status now
-        } else if (this.state.questions[this.state.index].status === 3) {
-            // useless status now
-        } else {
-            // SEEN
+        //mark as seen before moving if no previous status was set
+        if (!this.state.questions[this.state.index].status === 1 && !this.state.questions[this.state.index].status === 2 && !this.state.questions[this.state.index].status === 3) {
             this.state.questions[this.state.index].status = 3
         }
         this.setState({ index: (this.state.index + 1) % this.state.questions.length });
@@ -155,14 +152,8 @@ class MCQ extends Component {
     }
 
     moveToSpecificQuestion = (index) => {
-        if (this.state.questions[index].status === 1) {
-            // ATTEMPTED
-        } else if (this.state.questions[index].status === 2) {
-            // useless status now
-        } else if (this.state.questions[index].status === 3) {
-            // useless status now
-        } else {
-            // SEEN
+        //mark as seen before moving if no previous status was set
+        if (!this.state.questions[this.state.index].status === 1 && !this.state.questions[this.state.index].status === 2 && !this.state.questions[this.state.index].status === 3) {
             this.state.questions[index].status = 3
         }
         this.setState({
@@ -322,6 +313,7 @@ class MCQ extends Component {
                             width={width(95)}
                             height={height(100)}
                             onBackdropPress={this._toggleModalQuestions}
+                            onBackButtonPress = {() => this.setState({ IsModalVisibleQuestions: false })}
                             style={{ alignItems: 'flex-end', justifyContent: 'center' }}
                         >
                             <View style={{ backgroundColor: 'white', height: height(100), width: width(80) }}>
