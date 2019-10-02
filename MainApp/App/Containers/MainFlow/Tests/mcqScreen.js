@@ -148,7 +148,9 @@ class MCQ extends Component {
     }
 
     goToPrevious = () => {
-        this.setState({ index: (this.state.index - 1) % this.state.questions.length });
+        if(this.state.index > 0){
+            this.setState({ index: (this.state.index - 1) % this.state.questions.length });
+        }
     }
 
     moveToSpecificQuestion = (index) => {
