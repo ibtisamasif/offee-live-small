@@ -115,28 +115,31 @@ class MCQ extends Component {
     }
 
     chooseOption = async (item) => {
-        // if (this.state.questions[this.state.index].status && !this.state.questions[this.state.index].status === 3) {
-        this.setState({ loading_click: true })
-        for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
-            this.state.questions[this.state.index].question_options[i].isClicked = false
-        }
-        for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
-            if (item.id == this.state.questions[this.state.index].question_options[j].id) {
-                this.state.questions[this.state.index].question_options[j].isClicked = true
-                var selected_option = this.state.questions[this.state.index].question_options[j].id
+        var questionStatus = this.state.questions[this.state.index].status
+        if (questionStatus && questionStatus === 1) {
+            // alert('Not allowed')
+        } else {
+            this.setState({ loading_click: true })
+            for (let i = 0; i < this.state.questions[this.state.index].question_options.length; i++) {
+                this.state.questions[this.state.index].question_options[i].isClicked = false
+            }
+            for (let j = 0; j < this.state.questions[this.state.index].question_options.length; j++) {
+                if (item.id == this.state.questions[this.state.index].question_options[j].id) {
+                    this.state.questions[this.state.index].question_options[j].isClicked = true
+                    var selected_option = this.state.questions[this.state.index].question_options[j].id
 
-                if (!selected_option) {
-                    //mark as seen
-                    this.state.questions[this.state.index].status = 3
-                } else {
-                    //mark as attempted
-                    this.state.questions[this.state.index].question_answer = selected_option
-                    this.state.questions[this.state.index].status = 1
+                    if (!selected_option) {
+                        //mark as seen
+                        this.state.questions[this.state.index].status = 3
+                    } else {
+                        //mark as attempted
+                        this.state.questions[this.state.index].question_answer = selected_option
+                        this.state.questions[this.state.index].status = 1
+                    }
                 }
             }
+            this.setState({ loading_click: false })
         }
-        this.setState({ loading_click: false })
-        // }
     }
 
     goToNext = () => {
@@ -148,7 +151,7 @@ class MCQ extends Component {
     }
 
     goToPrevious = () => {
-        if(this.state.index > 0){
+        if (this.state.index > 0) {
             this.setState({ index: (this.state.index - 1) % this.state.questions.length });
         }
     }
@@ -315,7 +318,7 @@ class MCQ extends Component {
                             width={width(95)}
                             height={height(100)}
                             onBackdropPress={this._toggleModalQuestions}
-                            onBackButtonPress = {this._toggleModalQuestions}
+                            onBackButtonPress={this._toggleModalQuestions}
                             style={{ alignItems: 'flex-end', justifyContent: 'center' }}
                         >
                             <View style={{ backgroundColor: 'white', height: height(100), width: width(80) }}>
