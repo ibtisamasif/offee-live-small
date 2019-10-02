@@ -301,11 +301,11 @@ class MCQ extends Component {
                                     <Text style={[styles.h3, { color: 'white' }]}>Previous Question</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this._toggleModalSubmit} style={{ width: width(100), backgroundColor: colors.Offeeblue, marginVertical: totalSize(1), alignItems: 'center' }}>
+                            {/* <TouchableOpacity onPress={this._toggleModalSubmit} style={{ width: width(100), backgroundColor: colors.Offeeblue, marginVertical: totalSize(1), alignItems: 'center' }}>
                                 <View style={{ marginVertical: totalSize(2.5) }}>
                                     <Text style={[styles.h3, { color: 'white' }]}>Submit</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <Modal
                             isVisible={this.state.IsModalVisibleQuestions} // Show all quesions
