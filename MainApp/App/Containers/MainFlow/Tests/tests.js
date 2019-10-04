@@ -106,29 +106,29 @@ export class TestTabs extends Component {
                 initialPage={1}
                 renderTabBar={() => <ScrollableTabBar />}
             >
-                    <ScrollView>
-                        {
-                            this.state.test_category.map((item, key) => {
-                                return (
-                                    <TouchableOpacity key={key} style={styles.mainBtn}
-                                    >
-                                        <View style={styles.btnIconContainer}>
-                                            <View style={{ width: totalSize(6), height: totalSize(6), borderRadius: 100, backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center' }}>
-                                                <Icon name="clipboard-text" size={totalSize(3)} color='white' type='material-community' />
-                                            </View>
+                <ScrollView>
+                    {
+                        this.state.test_category.map((item, key) => {
+                            return (
+                                <TouchableOpacity key={key} style={styles.mainBtn}
+                                >
+                                    <View style={styles.btnIconContainer}>
+                                        <View style={{ width: totalSize(6), height: totalSize(6), borderRadius: 100, backgroundColor: colors.Offeeblue, alignItems: 'center', justifyContent: 'center' }}>
+                                            <Icon name="clipboard-text" size={totalSize(3)} color='white' type='material-community' />
                                         </View>
-                                        <View style={styles.btnTxtContainer}>
-                                            <Text style={styles.btnTxt1}>{item.category}</Text>
-                                            <Text style={styles.btnTxt2}>1/11</Text>
-                                        </View>
-                                        <View style={styles.arrowContainer}>
-                                            <Icon name="ios-arrow-forward" size={totalSize(2.5)} color='gray' type='ionicon' />
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </ScrollView>
+                                    </View>
+                                    <View style={styles.btnTxtContainer}>
+                                        <Text style={styles.btnTxt1}>{item.category}</Text>
+                                        <Text style={styles.btnTxt2}>1/11</Text>
+                                    </View>
+                                    <View style={styles.arrowContainer}>
+                                        <Icon name="ios-arrow-forward" size={totalSize(2.5)} color='gray' type='ionicon' />
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </ScrollView>
                 {
                     this.state.test_category.map((item, key) => {
                         return (
@@ -163,7 +163,7 @@ export class TestsList extends Component {
         let user = await Storage.getItem('user');
         loginData = await subjectList(user.cat, user.name);
         console.log('api data', loginData);
-        if(loginData){
+        if (loginData) {
             this.setState({
                 tests: loginData
             })
@@ -172,7 +172,7 @@ export class TestsList extends Component {
 
     async EnterToTest(item) {
         console.log('subject object:', item)
-        _this.props.navigation.navigate('testInstructions', {oneSubject: item})
+        _this.props.navigation.navigate('testInstructions', { oneSubject: item })
     }
 
     render() {
@@ -224,7 +224,7 @@ export class TestsList extends Component {
                                                             <Text style={[styles.h4, { marginVertical: totalSize(1.5), }]}>Minutes</Text>
                                                         </View>
                                                         <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{((item.quiz_duration)/60)*1}</Text>
+                                                            <Text style={[styles.h4, { color: 'black', fontWeight: 'bold', marginVertical: totalSize(1.5) }]}>{((item.quiz_duration) / 60) * 1}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ width: width(50), marginVertical: totalSize(1.5), alignItems: 'center' }}>

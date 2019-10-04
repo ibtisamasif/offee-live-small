@@ -253,8 +253,8 @@ class MCQ extends Component {
                                         </View>
                                         <View style={{ width: totalSize(0.5), height: totalSize(3), borderRightWidth: 0.5, borderRightColor: 'gray' }}>
                                         </View>
-                                        {/* <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text> */}
-                                        {/* <Text style={[styles.h3, { color: 'gray' }]}>  -0.3  </Text> */}
+                                        <Text style={[styles.h3, { color: 'gray' }]}>  +1.0  </Text>
+                                        <Text style={[styles.h3, { color: 'gray' }]}>  -0.3  </Text>
                                     </View>
 
                                     <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -404,15 +404,13 @@ class MCQ extends Component {
                                                 itemDimension={totalSize(5)}
                                                 items={this.state.questions}
                                                 renderItem={({ item }) => (
-                                                    <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                                                        <TouchableOpacity onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
-                                                            <Text style={{ height: totalSize(2.9), width: totalSize(3), fontSize: normalize(12), alignItems: 'center', justifyContent: 'center' }}>
-                                                                {
-                                                                    item.id
-                                                                }
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    </View>
+                                                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }} onPress={() => this.moveToSpecificQuestion(item.id - 1)} style={styles.getCircleStyle(item)}>
+                                                        <Text style={{ fontSize: normalize(12), textAlign: 'center' }}>
+                                                            {
+                                                                item.id
+                                                            }
+                                                        </Text>
+                                                    </TouchableOpacity>
                                                 )}
                                             />
                                         </View>
