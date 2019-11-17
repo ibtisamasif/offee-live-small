@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OffeeLive</string>
+    <string name="sample_device_admin">OffeeLive</string>
+    <string name="sample_device_admin_description">OffeeLive</string>
+</resources>
